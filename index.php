@@ -3,11 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ARSA social network 🤘🏼</title>
+  <title>arsanet 📡</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/styles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/title.css">
   <script src="lib/jquery-3.7.1.min.js"></script>
   <script src="lib/jquery-ui-1.14.1.custom/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="lib/jquery-ui-1.14.1.custom/jquery-ui.min.css">
@@ -15,7 +14,7 @@
   <script src="src/js/update_data.js"></script>
 </head>
 <body>
-  <?php include 'src/php/connection.php'; ?> 
+  <?php include 'src/php/connection.php'; ?>
   <input type="hidden" id="page_name" value="USER">
   <div id="header"></div>
   </div>
@@ -33,7 +32,7 @@
           Nickname:<input type="text" name="nickname"><br>
           First name:<input type="text" name="nome"><br>
           Last name:<input type="text" name="cognome"><br>
-          Birthday: <input type="date" name="dataNascita"><br>
+          Birthday: <input type="date" name="dataNascita"><br><br>
           <input type="submit" value="search user">
           <input type="reset" value="reset"><br><br>
         </form> 
