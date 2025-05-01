@@ -1,0 +1,27 @@
+h1 {
+  color: #f5f5f5; /* Blanco sucio */
+  font-size: 5em;
+  text-shadow: 0 0 2px #f5f5f5, 0 0 4px #f5f5f5, 0 0 8px #f5f5f5;
+  animation: interference 3s infinite;
+}
+@keyframes interference {
+  0% {
+    transform: skewX(0);
+  }
+
+  31% {
+    transform: skewX(-2deg);
+  }
+
+  31.5% {
+    transform: skewX(89deg);
+  }
+
+  32% {
+    transform: skewX(89deg);
+  }
+
+  32.1% {
+    transform: skewX(0);
+  }
+}
