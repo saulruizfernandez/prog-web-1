@@ -37,7 +37,7 @@ $(function () {
       buttons: {
         Delete: function () {
           $.post(
-            "src/php/delete_data.php",
+            "src/php/user/delete_data.php",
             {
               id: record_to_delete,
             },
@@ -46,7 +46,7 @@ $(function () {
                 alert("Error in deletion.");
               } else {
                 // Force table reload after deletion
-                $("#search_filter form").submit();
+                $("#search_add_filter form").submit();
               }
             }
           );
@@ -77,7 +77,7 @@ $(function () {
       buttons: {
         "Update information": function () {
           $.post(
-            "src/php/edit_data.php",
+            "src/php/user/edit_data.php",
             {
               id: record_to_update,
               nickname: $(this).find('input[name="nickname"]').val(),
@@ -90,7 +90,7 @@ $(function () {
                 alert("Error in update.");
               } else {
                 // Force table reload after update
-                $("#search_filter form").submit();
+                $("#search_add_filter form").submit();
               }
             },
             "json"
@@ -124,7 +124,7 @@ $(function () {
       buttons: {
         "Add information": function () {
           $.post(
-            "src/php/add_data.php",
+            "src/php/user/add_data.php",
             {
               id: record_to_add,
               nickname: $(this).find('input[name="nickname"]').val(),
@@ -137,20 +137,19 @@ $(function () {
                 alert("Error in addition.");
               } else {
                 // Force table reload after addition
-                $("#search_filter form").submit();
+                $("#search_add_filter form").submit();
               }
             },
             "json"
           ).fail(function (jqXHR, textStatus, errorThrown) {
             alert("Server error: " + textStatus + " - " + errorThrown);
-          }
-          );
+          });
           $(this).dialog("close");
         },
         Cancel: function () {
           $(this).dialog("close");
         },
-      }
+      },
     });
   });
 });

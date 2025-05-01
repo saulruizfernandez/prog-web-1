@@ -1,12 +1,11 @@
 <?php
 $servername = "localhost";
-$username = "root";
-$password = "";
+$username = "user";
+$password = "1234";
 $dbname = "my_arsahosting";
-$socket = "/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock";
 
 try {
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname;unix_socket=$socket", $username);
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname;", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("❌ Conexión fallida: " . $e->getMessage());

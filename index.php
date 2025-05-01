@@ -11,7 +11,7 @@
   <script src="lib/jquery-ui-1.14.1.custom/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="lib/jquery-ui-1.14.1.custom/jquery-ui.min.css">
   <script src="src/js/header_footer.js"></script>
-  <script src="src/js/update_data.js"></script>
+  <script src="src/js/user/update_data.js"></script>
 </head>
 <body>
   <?php include 'src/php/connection.php'; ?>
@@ -21,7 +21,7 @@
   <div class="container">
     <div id="left_layout">
       <nav id="navigation">
-        <a href="#" class="selected">User</a>
+        <a href="index.php" class="selected">User</a>
         <a href="notice_board.php">Notice board</a>
         <a href="multimedia_file.php">Multimedia file</a>
         <a href="group.php">Group</a>

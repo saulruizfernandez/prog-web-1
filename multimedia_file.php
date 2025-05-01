@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ARSA social network 🤘🏼</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +13,7 @@
   <script src="lib/jquery-ui-1.14.1.custom/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="lib/jquery-ui-1.14.1.custom/jquery-ui.min.css">
   <script src="src/js/header_footer.js"></script>
-  <script src="src/js/update_data.js"></script>
+  <script src="src/js/multimedia-file/update_data.js"></script>
 </head>
 <body>
   <?php include 'src/php/connection.php'; ?> 
@@ -24,17 +25,25 @@
       <nav id="navigation">
         <a href="index.php" class="selected">User</a>
         <a href="notice_board.php">Notice board</a>
-        <a href="#" class="selected">Multimedia file</a>
+        <a href="multimedia_file.php" class="selected">Multimedia file</a>
         <a href="group.php">Group</a>
       </nav>
       <div id="search_add_filter">
         <form method="POST" action="">
-          User code:<input type="text" name="codice"><br>
-          Nickname:<input type="text" name="nickname"><br>
-          First name:<input type="text" name="nome"><br>
-          Last name:<input type="text" name="cognome"><br>
-          Birthday: <input type="date" name="dataNascita"><br>
-          <input type="submit" value="search user">
+          Uploaded by:<input type="text" name="caricatoda"><br>
+          File number:<input type="number" name="numero"><br>
+          Title:<input type="text" name="title"><br>
+          Dimension:<input type="number" name="dimension" step="0.01"><br>
+          URL:<input type="text" name="uurl"><br>
+          File type:<br>
+          <input type="radio" id="video" name="file_t" value="video">
+          <label for="video">Video</label><br>
+          <input type="radio" id="audio" name="file_t" value="audio">
+          <label for="audio">Audio</label><br>
+          <input type="radio" id="image" name="file_t" value="image">
+          <label for="image">Image</label><br><br>
+
+          <input type="submit" value="search file">
           <input type="reset" value="reset"><br><br>
         </form>
         <form method="POST" action="">
@@ -48,32 +57,36 @@
 
       <?php
       $error = false;
-      $query = "SELECT * FROM Utente WHERE 1=1";
+      $query = "SELECT * FROM FileMultimediale WHERE 1=1";
       $params = [];
 
       if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (!empty($_POST["codice"])) {
-          $query .= " AND codice = :codice"; // placeholder
-          $params[":codice"] = $_POST["codice"];
+        if (!empty($_POST["caricatoda"])) {
+          $query .= " AND caricatoDa = :caricatoda"; // placeholder
+          $params[":caricatoda"] = $_POST["caricatoda"];
         }
-        if (!empty($_POST["nickname"])) {
-          $query .= " AND nickname = :nickname";
-          $params[":nickname"] = $_POST["nickname"];
+        if (!empty($_POST["numero"])) {
+          $query .= " AND numero = :numero";
+          $params[":numero"] = $_POST["numero"];
         }
-        if (!empty($_POST["nome"])) {
-          $query .= " AND nome = :nome";
-          $params[":nome"] = $_POST["nome"];
+        if (!empty($_POST["title"])) {
+          $query .= " AND titolo = :title";
+          $params[":title"] = $_POST["title"];
         }
-        if (!empty($_POST["cognome"])) {
-          $query .= " AND cognome = :cognome";
-          $params[":cognome"] = $_POST["cognome"];
+        if (!empty($_POST["dimension"])) {
+          $query .= " AND dimensione = :dimension";
+          $params[":dimension"] = $_POST["dimension"];
         }
-        if (!empty($_POST["dataNascita"])) {
-          $query .= " AND dataNascita = :dataNascita";
-          $params[":dataNascita"] = $_POST["dataNascita"];
+        if (!empty($_POST["uurl"])) {
+          $query .= " AND 'URL' = :uurl";
+          $params[":uurl"] = $_POST["uurl"];
+        }
+        if (!empty($_POST["file_t"])) {
+          $query .= " AND tipo = :file_t";
+          $params[":file_t"] = $_POST["file_t"];
         }
       }
-      $query .= " ORDER BY codice";
+      $query .= " ORDER BY numero";
 
       try {
         $aux = $conn->prepare($query);
@@ -89,11 +102,12 @@
 
       <table class="table">
         <tr class = "header">
-          <th>Codice</th>
-          <th>Nickname</th>
-          <th>Name</th>
-          <th>Surname</th>
-          <th>Birthday</th>
+          <th>Uploaded by</th>
+          <th>File number</th>
+          <th>Title</th>
+          <th>Dimension</th>
+          <th>URL</th>
+          <th>File type</th>
         </tr>
 
       <?php
@@ -107,11 +121,12 @@
       ?>
 
         <tr <?php echo $classrow; ?>>
-          <td id="<?php echo $row["codice"]; ?>_codice"> <?php echo $row["codice"]; ?></td>
-          <td id="<?php echo $row["codice"]; ?>_nickname"> <?php echo $row["nickname"]; ?></td>
-          <td id="<?php echo $row["codice"]; ?>_nome"> <?php echo $row["nome"]; ?></td>
-          <td id="<?php echo $row["codice"]; ?>_cognome"> <?php echo $row["cognome"]; ?></td>
-          <td id="<?php echo $row["codice"]; ?>_dataNascita"> <?php echo $row["dataNascita"]; ?></td>
+          <td id="<?php echo $row["numero"]; ?>_uploadedby"> <?php echo $row["caricatoDa"]; ?></td>
+          <td id="<?php echo $row["numero"]; ?>_number"> <?php echo $row["numero"]; ?></td>
+          <td id="<?php echo $row["numero"]; ?>_title"> <?php echo $row["titolo"]; ?></td>
+          <td id="<?php echo $row["numero"]; ?>_dimesion"> <?php echo $row["dimensione"]; ?></td>
+          <td id="<?php echo $row["numero"]; ?>_url"> <?php echo $row["URL"]; ?></td>
+          <td id="<?php echo $row["numero"]; ?>_filetype"> <?php echo $row["tipo"]; ?></td>
           <td><button class="edit_button" id="<?php echo $row["codice"]; ?>_edit"><img src="media/icons/edit_icon.png" alt="edit_icon" style="width:30px; height:30px"></button></td>
           <td><button class="delete_button" id="<?php echo $row["codice"]; ?>_delete"><img src="media/icons/delete_icon.png" alt="delete_icon" style="width:30px; height:30px"></button></td>
         </tr>
@@ -133,19 +148,22 @@
   </div>
   <div id="edit_dialog" title="Edit record">
     <form action="" method="post">
-      User code: <input type="text" name="codice" readonly><br>
-      Nickname: <input type="text" name="nickname"><br>
-      First name: <input type="text" name="nome"><br>
-      Last name: <input type="text" name="cognome"><br>
-      Birthday: <input type="date" name="dataNascita"><br>
+      Uploaded by: <input type="text" name="uploadedby"><br>
+      File number: <input type="number " name="number" readonly><br>
+      Title: <input type="text" name="title"><br>
+      Dimension: <input type="number" step="0.01" name="dimension"><br>
+      URL: <input type="text" name="uurl"><br>
+      File type: <input type="text" name="filetype"><br>
     </form>
   </div>
   <div id="add_dialog" title="Add record">
     <form action="" method="post">
-      Nickname: <input type="text" name="nickname"><br>
-      First name: <input type="text" name="nome"><br>
-      Last name: <input type="text" name="cognome"><br>
-      Birthday: <input type="date" name="dataNascita"><br>
+      Uploaded by: <input type="text" name="uploadedby"><br>
+      File number: <input type="number " name="number" readonly><br>
+      Title: <input type="text" name="title"><br>
+      Dimension: <input type="number" step="0.01" name="dimension"><br>
+      URL: <input type="text" name="uurl"><br>
+      File type: <input type="text" name="filetype"><br>
     </form>
   </div>
   <div id="footer"></div>
