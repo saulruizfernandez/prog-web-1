@@ -22,8 +22,8 @@
   <div class="container">
     <div id="left_layout">
       <nav id="navigation">
-        <a href="#" class="selected">User</a>
-        <a href="notice_board.php">Notice board</a>
+        <a href="index.php">User</a>
+        <a href="#" class="selected">Notice board</a>
         <a href="multimedia_file.php">Multimedia file</a>
         <a href="group.php">Group</a>
       </nav>

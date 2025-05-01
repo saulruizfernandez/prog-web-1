@@ -129,7 +129,7 @@ header {
 }
 
 /* Search filter */
-#search_filter {
+#search_add_filter {
   position: relative;
   margin: 10px;
   margin-top: 0;
@@ -138,6 +138,13 @@ header {
   background-color: #90a955;
   min-height: 450px;
   height: 100%;
+}
+
+.section-title {
+  font-size: 16px;
+  text-align: left;
+  margin: 5px 0 10px 0; /* top right bottom left */
+  font-family: Arial, sans-serif;
 }
 
 #content {
@@ -192,6 +199,21 @@ header {
 
 .delete_button img {
   display: block;
+  width: 100%;
+  height: auto;
+}
+
+.add_button {
+  all: unset;
+  width: auto;
+  height: auto;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.add_button img {
+  display: block;
+  text-align: center;
   width: 100%;
   height: auto;
 }

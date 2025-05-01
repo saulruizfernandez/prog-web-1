@@ -22,9 +22,9 @@
   <div class="container">
     <div id="left_layout">
       <nav id="navigation">
-        <a href="#" class="selected">User</a>
+        <a href="index.php" class="selected">User</a>
         <a href="notice_board.php">Notice board</a>
-        <a href="multimedia_file.php">Multimedia file</a>
+        <a href="#" class="selected">Multimedia file</a>
         <a href="group.php">Group</a>
       </nav>
       <div id="search_add_filter">
