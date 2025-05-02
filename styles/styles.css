@@ -115,7 +115,7 @@ header {
 }
 
 /* Search filter */
-#search_add_filter {
+#search_filter {
   position: relative;
   margin: 10px;
   margin-top: 0;
@@ -128,6 +128,24 @@ header {
 
 #search_filter > form > input {
   margin-bottom: 10px;
+}
+
+#contenedor_add_file {
+  display: flex;
+  justify-content: center;
+}
+
+#contenedor_add_user {
+  display: flex;
+  justify-content: center;
+}
+
+.add_button {
+  cursor: pointer;
+  background-color: #132a13;
+  border-color: #31572c;
+  color: #ecf39e;
+  font-size: 20px;
 }
 
 #content {
@@ -182,21 +200,6 @@ header {
 
 .delete_button img {
   display: block;
-  width: 100%;
-  height: auto;
-}
-
-.add_button {
-  all: unset;
-  width: auto;
-  height: auto;
-  display: inline-block;
-  cursor: pointer;
-}
-
-.add_button img {
-  display: block;
-  text-align: center;
   width: 100%;
   height: auto;
 }

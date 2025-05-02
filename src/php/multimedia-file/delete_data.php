@@ -6,10 +6,10 @@ if (!$conn) {
     exit;
 }
 
-$record_delete_id = intval($_POST['id']);
-$sql = "DELETE FROM Utente WHERE codice = :id";
+$record_delete_id = intval($_POST['filenumber']);
+$sql = "DELETE FROM FileMultimediale WHERE numero = :filenumber";
 $stmt = $conn->prepare($sql); // statement = stmt
-$stmt->bindValue(':id', $record_delete_id, PDO::PARAM_INT);
+$stmt->bindValue(':filenumber', $record_delete_id, PDO::PARAM_INT);
 
 if ($stmt->execute()) {
     echo json_encode(['success' => true]); // response to client (update_data.js)

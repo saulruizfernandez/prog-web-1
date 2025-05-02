@@ -46,7 +46,7 @@ $(function () {
                 alert("Error in deletion.");
               } else {
                 // Force table reload after deletion
-                $("#search_add_filter form").submit();
+                $("#search_filter form").submit();
               }
             }
           );
@@ -90,7 +90,7 @@ $(function () {
                 alert("Error in update.");
               } else {
                 // Force table reload after update
-                $("#search_add_filter form").submit();
+                $("#search_filter form").submit();
               }
             },
             "json"
@@ -105,7 +105,7 @@ $(function () {
       },
     });
   });
-  $("#add_user_button").on("click", function () {
+  $("#add_button_user").on("click", function () {
     const record_to_add = $(this).attr("id").replace(/\D/g, "");
     fill_form_values(record_to_add);
     $("#add_dialog").dialog({
@@ -137,7 +137,7 @@ $(function () {
                 alert("Error in addition.");
               } else {
                 // Force table reload after addition
-                $("#search_add_filter form").submit();
+                $("#search_filter form").submit();
               }
             },
             "json"

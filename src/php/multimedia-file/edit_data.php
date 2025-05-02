@@ -6,14 +6,28 @@ if (!$conn) {
     exit;
 }
 
-$params = [];
-$params[':codice'] = intval($_POST['id']);
-$params[':nickname'] = $_POST['nickname'] != '' ? $_POST['nickname'] : NULL;
-$params[':nome'] = $_POST['nome'] != '' ? $_POST['nome'] : NULL;
-$params[':cognome'] = $_POST['cognome'] != '' ? $_POST['cognome'] : NULL;
-$params[':dataNascita'] = $_POST['dataNascita'] != '' ? $_POST['dataNascita'] : NULL;
+$uploadedby = $_POST['uploadedby'] ?? null;
+if ($uploadedby) {
+    $checkUserQuery = "SELECT COUNT(*) AS user_exists FROM Utente WHERE codice = :uploadedby";
+    $checkUserStmt = $conn->prepare($checkUserQuery);
+    $checkUserStmt->execute([':uploadedby' => $uploadedby]);
+    $userExists = $checkUserStmt->fetch(PDO::FETCH_ASSOC)['user_exists'];
 
-$sql = "UPDATE Utente SET nickname = :nickname, nome = :nome, cognome = :cognome, dataNascita = :dataNascita WHERE codice = :codice";
+    if (!$userExists) {
+        echo json_encode(['success' => false, 'error' => 'The user does not exist']);
+        exit;
+    }
+}
+
+$params = [];
+$params[':filenumber'] = intval($_POST['filenumber']);
+$params[':uploadedby'] = $_POST['uploadedby'] != '' ? $_POST['uploadedby'] : NULL;
+$params[':title'] = $_POST['title'] != '' ? $_POST['title'] : NULL;
+$params[':dimension'] = $_POST['dimension'] != '' ? $_POST['dimension'] : NULL;
+$params[':uurl'] = $_POST['uurl'] != '' ? $_POST['uurl'] : NULL;
+$params[':filetype'] = $_POST['filetype'] != '' ? $_POST['filetype'] : NULL;
+
+$sql = "UPDATE FileMultimediale SET caricatoDa = :uploadedby, titolo = :title, dimensione = :dimension, `URL` = :uurl, tipo = :filetype WHERE numero = :filenumber";
 $stmt = $conn->prepare($sql); // statement = stmt
 
 if ($stmt->execute($params)) {

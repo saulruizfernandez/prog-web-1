@@ -27,7 +27,7 @@
         <a href="multimedia_file.php">Multimedia file</a>
         <a href="group.php">Group</a>
       </nav>
-      <div id="search_add_filter">
+      <div id="search_filter">
         <form method="POST" action="">
           User code:<input type="text" name="codice"><br>
           Nickname:<input type="text" name="nickname"><br>
@@ -37,11 +37,10 @@
           <input type="submit" value="search user">
           <input type="reset" value="reset"><br><br>
         </form>
-        <form method="POST" action="">
-          <button type="button" class="add_button" id="add_user_button">
-            <img src="media/icons/add_icon.png" alt="add_icon" style="width:50px; height:50px">
-          </button>
-        </form>
+        <div id="contenedor_add_user">
+          <button class="add_button" id="add_button_user"><b>+ Add User</b></button>
+        </div>
+        
       </div>
     </div>
     <div id="content">

@@ -3,12 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ARSA social network 🤘🏼</title>
+  <title>arsanet 📡</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/styles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/title.css">
   <script src="lib/jquery-3.7.1.min.js"></script>
   <script src="lib/jquery-ui-1.14.1.custom/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="lib/jquery-ui-1.14.1.custom/jquery-ui.min.css">
@@ -28,7 +26,7 @@
         <a href="multimedia_file.php" class="selected">Multimedia file</a>
         <a href="group.php">Group</a>
       </nav>
-      <div id="search_add_filter">
+      <div id="search_filter">
         <form method="POST" action="">
           Uploaded by:<input type="text" name="caricatoda"><br>
           File number:<input type="number" name="numero"><br>
@@ -42,15 +40,12 @@
           <label for="audio">Audio</label><br>
           <input type="radio" id="image" name="file_t" value="image">
           <label for="image">Image</label><br><br>
-
           <input type="submit" value="search file">
           <input type="reset" value="reset"><br><br>
         </form>
-        <form method="POST" action="">
-          <button type="button" class="add_button" id="add_user_button">
-            <img src="media/icons/add_icon.png" alt="add_icon" style="width:50px; height:50px">
-          </button>
-        </form>
+        <div id="contenedor_add_file">
+          <button class="add_button" id="add_button_mult_file"><strong>+ Add File</strong></button>
+        </div>
       </div>
     </div>
     <div id="content">
@@ -78,7 +73,7 @@
           $params[":dimension"] = $_POST["dimension"];
         }
         if (!empty($_POST["uurl"])) {
-          $query .= " AND 'URL' = :uurl";
+          $query .= " AND `URL` = :uurl";
           $params[":uurl"] = $_POST["uurl"];
         }
         if (!empty($_POST["file_t"])) {
@@ -124,11 +119,11 @@
           <td id="<?php echo $row["numero"]; ?>_uploadedby"> <?php echo $row["caricatoDa"]; ?></td>
           <td id="<?php echo $row["numero"]; ?>_number"> <?php echo $row["numero"]; ?></td>
           <td id="<?php echo $row["numero"]; ?>_title"> <?php echo $row["titolo"]; ?></td>
-          <td id="<?php echo $row["numero"]; ?>_dimesion"> <?php echo $row["dimensione"]; ?></td>
+          <td id="<?php echo $row["numero"]; ?>_dimension"> <?php echo $row["dimensione"]; ?></td>
           <td id="<?php echo $row["numero"]; ?>_url"> <?php echo $row["URL"]; ?></td>
           <td id="<?php echo $row["numero"]; ?>_filetype"> <?php echo $row["tipo"]; ?></td>
-          <td><button class="edit_button" id="<?php echo $row["codice"]; ?>_edit"><img src="media/icons/edit_icon.png" alt="edit_icon" style="width:30px; height:30px"></button></td>
-          <td><button class="delete_button" id="<?php echo $row["codice"]; ?>_delete"><img src="media/icons/delete_icon.png" alt="delete_icon" style="width:30px; height:30px"></button></td>
+          <td><button class="edit_button" id="<?php echo $row["numero"]; ?>_edit"><img src="media/icons/edit_icon.png" alt="edit_icon" style="width:30px; height:30px"></button></td>
+          <td><button class="delete_button" id="<?php echo $row["numero"]; ?>_delete"><img src="media/icons/delete_icon.png" alt="delete_icon" style="width:30px; height:30px"></button></td>
         </tr>
 
       <?php
@@ -153,17 +148,27 @@
       Title: <input type="text" name="title"><br>
       Dimension: <input type="number" step="0.01" name="dimension"><br>
       URL: <input type="text" name="uurl"><br>
-      File type: <input type="text" name="filetype"><br>
+      File type:
+      <select name="filetype" id="filetypeselect">
+        <option value="image">image</option>
+        <option value="audio">audio</option>
+        <option value="video">video</option>
+      </select>
     </form>
   </div>
   <div id="add_dialog" title="Add record">
     <form action="" method="post">
-      Uploaded by: <input type="text" name="uploadedby"><br>
+      Uploaded by: <input type="number" name="uploadedby"><br>
       File number: <input type="number " name="number" readonly><br>
       Title: <input type="text" name="title"><br>
       Dimension: <input type="number" step="0.01" name="dimension"><br>
       URL: <input type="text" name="uurl"><br>
-      File type: <input type="text" name="filetype"><br>
+      File type:
+      <select name="filetype" id="filetypeadd">
+        <option value="image">image</option>
+        <option value="audio">audio</option>
+        <option value="video">video</option>
+      </select>
     </form>
   </div>
   <div id="footer"></div>
