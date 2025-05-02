@@ -11,6 +11,7 @@
   <script src="lib/jquery-ui-1.14.1.custom/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="lib/jquery-ui-1.14.1.custom/jquery-ui.min.css">
   <script src="src/js/header_footer.js"></script>
+  <script src="src/js/index_update_data.js"></script>
   <script src="src/js/user/update_data.js"></script>
 </head>
 <body>
@@ -88,7 +89,7 @@
 
       <table class="table">
         <tr class = "header">
-          <th>Codice</th>
+          <th>Code</th>
           <th>Nickname</th>
           <th>Name</th>
           <th>Surname</th>
