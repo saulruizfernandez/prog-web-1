@@ -37,7 +37,7 @@ $(function () {
       buttons: {
         Delete: function () {
           $.post(
-            "src/php/delete_data.php",
+            "src/php/index/delete_data.php",
             {
               id: record_to_delete,
             },
@@ -46,7 +46,7 @@ $(function () {
                 alert("Error in deletion.");
               } else {
                 // Force table reload after deletion
-                $("#search_filter form").submit();
+                $("#search_add_filter form").submit();
               }
             }
           );
@@ -58,6 +58,7 @@ $(function () {
       },
     });
   });
+  
   $(".edit_button").on("click", function () {
     const record_to_update = $(this).attr("id").replace(/\D/g, "");
     fill_form_values(record_to_update);
@@ -77,7 +78,7 @@ $(function () {
       buttons: {
         "Update information": function () {
           $.post(
-            "src/php/edit_data.php",
+            "src/php/index/edit_data.php",
             {
               id: record_to_update,
               nickname: $(this).find('input[name="nickname"]').val(),
@@ -90,7 +91,7 @@ $(function () {
                 alert("Error in update.");
               } else {
                 // Force table reload after update
-                $("#search_filter form").submit();
+                $("#search_add_filter form").submit();
               }
             },
             "json"
@@ -105,6 +106,7 @@ $(function () {
       },
     });
   });
+
   $("#add_user_button").on("click", function () {
     const record_to_add = $(this).attr("id").replace(/\D/g, "");
     fill_form_values(record_to_add);
@@ -124,7 +126,7 @@ $(function () {
       buttons: {
         "Add information": function () {
           $.post(
-            "src/php/add_data.php",
+            "src/php/index/add_data.php",
             {
               id: record_to_add,
               nickname: $(this).find('input[name="nickname"]').val(),
@@ -137,7 +139,7 @@ $(function () {
                 alert("Error in addition.");
               } else {
                 // Force table reload after addition
-                $("#search_filter form").submit();
+                $("#search_add_filter form").submit();
               }
             },
             "json"

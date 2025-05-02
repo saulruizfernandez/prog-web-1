@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-include __DIR__ . '/connection.php';
+include __DIR__ . '/../connection.php';
 if (!$conn) {
     echo json_encode(['success' => false]);
     exit;
