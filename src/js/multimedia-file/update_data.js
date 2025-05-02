@@ -10,13 +10,22 @@ $(function () {
       } else if ($(this).attr("name") === "title") {
         $(this).val($("#" + record_to_update.toString() + "_title").text());
       } else if ($(this).attr("name") === "dimension") {
-        $(this).val($("#" + record_to_update.toString() + "_dimension").text());
+        $(this).val(
+          parseFloat(
+            $("#" + record_to_update.toString() + "_dimension")
+              .text()
+              .trim()
+          )
+        );
       } else if ($(this).attr("name") === "uurl") {
         $(this).val($("#" + record_to_update.toString() + "_url").text());
-      } else if ($(this).attr("name") === "filetype") {
-        $(this).val($("#" + record_to_update.toString() + "_filetype").text());
       }
     });
+    $("#filetypeselect").val(
+      $("#" + record_to_update.toString() + "_filetype")
+        .text()
+        .trim()
+    );
   }
 
   $(".delete_button").on("click", function () {
@@ -37,9 +46,9 @@ $(function () {
       buttons: {
         Delete: function () {
           $.post(
-            "src/php/delete_data.php",
+            "src/php/multimedia-file/delete_data.php",
             {
-              id: record_to_delete,
+              filenumber: record_to_delete,
             },
             function (response) {
               if (!response.success) {
@@ -77,17 +86,18 @@ $(function () {
       buttons: {
         "Update information": function () {
           $.post(
-            "src/php/edit_data.php",
+            "src/php/multimedia-file/edit_data.php",
             {
-              id: record_to_update,
-              nickname: $(this).find('input[name="nickname"]').val(),
-              nome: $(this).find('input[name="nome"]').val(),
-              cognome: $(this).find('input[name="cognome"]').val(),
-              dataNascita: $(this).find('input[name="dataNascita"]').val(),
+              filenumber: record_to_update,
+              uploadedby: $(this).find('input[name="uploadedby"]').val(),
+              title: $(this).find('input[name="title"]').val(),
+              dimension: $(this).find('input[name="dimension"]').val(),
+              uurl: $(this).find('input[name="uurl"]').val(),
+              filetype: $(this).find('select[name="filetype"]').val(),
             },
             function (response) {
               if (!response.success) {
-                alert("Error in update.");
+                alert("Error in update: " + response.error);
               } else {
                 // Force table reload after update
                 $("#search_filter form").submit();
@@ -105,7 +115,7 @@ $(function () {
       },
     });
   });
-  $("#add_user_button").on("click", function () {
+  $("#add_button_mult_file").on("click", function () {
     const record_to_add = $(this).attr("id").replace(/\D/g, "");
     fill_form_values(record_to_add);
     $("#add_dialog").dialog({
@@ -124,17 +134,18 @@ $(function () {
       buttons: {
         "Add information": function () {
           $.post(
-            "src/php/add_data.php",
+            "src/php/multimedia-file/add_data.php",
             {
-              id: record_to_add,
-              nickname: $(this).find('input[name="nickname"]').val(),
-              nome: $(this).find('input[name="nome"]').val(),
-              cognome: $(this).find('input[name="cognome"]').val(),
-              dataNascita: $(this).find('input[name="dataNascita"]').val(),
+              filenumber: record_to_add,
+              uploadedby: $(this).find('input[name="uploadedby"]').val(),
+              title: $(this).find('input[name="title"]').val(),
+              dimension: $(this).find('input[name="dimension"]').val(),
+              uurl: $(this).find('input[name="uurl"]').val(),
+              filetype: $(this).find('select[name="filetype"]').val(),
             },
             function (response) {
               if (!response.success) {
-                alert("Error in addition.");
+                alert("Error in addition: " + response.error);
               } else {
                 // Force table reload after addition
                 $("#search_filter form").submit();

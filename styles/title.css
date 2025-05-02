@@ -9,19 +9,19 @@ h1 {
     transform: skewX(0);
   }
 
-  31% {
+  10% {
     transform: skewX(-2deg);
   }
 
-  31.5% {
+  11% {
     transform: skewX(89deg);
   }
 
-  32% {
+  12% {
     transform: skewX(89deg);
   }
 
-  32.1% {
+  13% {
     transform: skewX(0);
   }
 }
