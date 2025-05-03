@@ -48,10 +48,17 @@ header {
   padding: 20px;
   margin: 0;
   z-index: 0;
+  color: #ffffff; /* Color blanco para el texto */
+  font-size: 80px; /* Ajusta el tamaño del texto según sea necesario */
+  font-weight: bold; /* Hace que el texto sea más grueso */
+  text-shadow: 0 0 5px #90a955,
+    /* Brillo cercano en tono verde (#90A955) */ 0 0 10px #90a955,
+    /* Brillo intermedio */ 0 0 20px #90a955,
+    /* Brillo más intenso */ 0 0 40px #90a955, 0 0 80px #90a955; /* Brillo extendido */
 }
 
 #header_bar {
-  background-color: #132a13;
+  background-color: rgb(0, 0, 0);
   display: flex;
   align-items: center;
 }
@@ -140,10 +147,11 @@ header {
 
 .add_button {
   cursor: pointer;
-  background-color: #132a13;
-  border-color: #31572c;
-  color: #ecf39e;
+  background-color: black;
+  border-color: rgb(42, 42, 42);
+  color: white;
   font-size: 20px;
+  width: 90%;
 }
 
 #content {
@@ -166,7 +174,7 @@ header {
 }
 
 .even_row {
-  background-color: #90a955;
+  background-color: rgb(202, 202, 202);
 }
 
 .table td:nth-last-child(2),
@@ -204,7 +212,7 @@ header {
 
 footer {
   position: relative;
-  background-color: #132a13;
+  background-color: black;
   width: 100%;
   height: 200px;
 }
@@ -219,6 +227,6 @@ footer {
   margin: 0;
 }
 
-.selected {
+#navigation a.selected {
   background-color: black;
 }

@@ -21,10 +21,10 @@
   <div class="container">
     <div id="left_layout">
       <nav id="navigation">
-        <a href="index.php" class="selected">User</a>
+        <a href="index.php">User</a>
         <a href="notice_board.php">Notice board</a>
-        <a href="multimedia_file.php" class="selected">Multimedia file</a>
-        <a href="group.php">Group</a>
+        <a href="multimedia_file.php">Multimedia file</a>
+        <a href="group.php" class="selected">Group</a>
       </nav>
       <div id="search_filter">
         <form method="POST" action="">
@@ -118,10 +118,10 @@
 
     </div>
   </div>
-  <div id="delete_dialog" title="Delete record">
+  <div id="delete_dialog" title="Delete record" style="display: none;">
     <p>Are you sure you want to delete the record?</p>
   </div>
-  <div id="edit_dialog" title="Edit record">
+  <div id="edit_dialog" title="Edit record" style="display: none;">
     <form action="" method="post">
       Created by: <input type="number" name="createdby"><br>
       Code: <input type="number " name="code" readonly><br>
@@ -129,7 +129,7 @@
       Creation date: <input type="date" name="creationdate"><br>
     </form>
   </div>
-  <div id="add_dialog" title="Add record">
+  <div id="add_dialog" title="Add record" style="display: none;">
     <form action="" method="post">
       Created by: <input type="number" name="createdby"><br>
       Code: <input type="number " name="code" readonly><br>

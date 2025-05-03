@@ -22,7 +22,7 @@
     <div id="left_layout">
       <nav id="navigation">
         <a href="index.php">User</a>
-        <a href="#" class="selected">Notice board</a>
+        <a href="notice_board.php" class="selected">Notice board</a>
         <a href="multimedia_file.php">Multimedia file</a>
         <a href="group.php">Group</a>
       </nav>
@@ -31,7 +31,7 @@
           User code:<input type="text" name="codiceUtente"><br>
           Notice Name:<input type="text" name="nome"><br>
           Creation Date: <input type="date" name="dataCreazione"><br>
-          <input type="submit" value="search user">
+          <input type="submit" value="search notice board">
           <input type="reset" value="reset"><br><br>
         </form>
         <div id="contenedor_add_bacheca">
@@ -111,17 +111,17 @@
 
     </div>
   </div>
-  <div id="delete_dialog" title="Delete record">
+  <div id="delete_dialog" title="Delete record" style="display: none;">
     <p>Are you sure you want to delete the record?</p>
   </div>
-  <div id="edit_dialog" title="Edit record">
+  <div id="edit_dialog" title="Edit record" style="display: none;">
     <form action="" method="post">
       User code: <input type="text" name="codiceUtente"><br>
       Notice name: <input type="text" name="nome"><br>
       Creation Date: <input type="date" name="dataCreazione"><br>
     </form>
   </div>
-  <div id="add_dialog" title="Add record">
+  <div id="add_dialog" title="Add record" style="display: none;">
     <form action="" method="post">
       User code: <input type="text" name="codiceUtente"><br>
       Notice name: <input type="text" name="nome"><br>

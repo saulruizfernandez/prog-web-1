@@ -21,7 +21,7 @@
   <div class="container">
     <div id="left_layout">
       <nav id="navigation">
-        <a href="index.php" class="selected">User</a>
+        <a href="index.php">User</a>
         <a href="notice_board.php">Notice board</a>
         <a href="multimedia_file.php" class="selected">Multimedia file</a>
         <a href="group.php">Group</a>
@@ -138,10 +138,10 @@
 
     </div>
   </div>
-  <div id="delete_dialog" title="Delete record">
+  <div id="delete_dialog" title="Delete record" style="display: none;">
     <p>Are you sure you want to delete the record?</p>
   </div>
-  <div id="edit_dialog" title="Edit record">
+  <div id="edit_dialog" title="Edit record" style="display: none;">
     <form action="" method="post">
       Uploaded by: <input type="text" name="uploadedby"><br>
       File number: <input type="number " name="number" readonly><br>
@@ -156,7 +156,7 @@
       </select>
     </form>
   </div>
-  <div id="add_dialog" title="Add record">
+  <div id="add_dialog" title="Add record" style="display: none;">
     <form action="" method="post">
       Uploaded by: <input type="number" name="uploadedby"><br>
       File number: <input type="number " name="number" readonly><br>

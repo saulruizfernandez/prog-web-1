@@ -127,10 +127,10 @@
 
     </div>
   </div>
-  <div id="delete_dialog" title="Delete record">
+  <div id="delete_dialog" title="Delete record" style="display: none;">
     <p>Are you sure you want to delete the record?</p>
   </div>
-  <div id="edit_dialog" title="Edit record">
+  <div id="edit_dialog" title="Edit record" style="display: none;">
     <form action="" method="post">
       User code: <input type="text" name="codice" readonly><br>
       Nickname: <input type="text" name="nickname"><br>
@@ -139,7 +139,7 @@
       Birthday: <input type="date" name="dataNascita"><br>
     </form>
   </div>
-  <div id="add_dialog" title="Add record">
+  <div id="add_dialog" title="Add record" style="display: none;">
     <form action="" method="post">
       Nickname: <input type="text" name="nickname"><br>
       First name: <input type="text" name="nome"><br>

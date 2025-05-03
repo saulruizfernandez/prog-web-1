@@ -106,7 +106,7 @@ $(function () {
       },
     });
   });
-  $("#add_button_user").on("click", function () {
+  $("#add_button_group").on("click", function () {
     const record_to_add = $(this).attr("id").replace(/\D/g, "");
     fill_form_values(record_to_add);
     $("#add_dialog").dialog({
@@ -127,7 +127,7 @@ $(function () {
           $.post(
             "src/php/group/add_data.php",
             {
-              codice: record_to_update,
+              codice: record_to_add,
               creatoDa: $(this).find('input[name="createdby"]').val(),
               nome: $(this).find('input[name="name"]').val(),
               dataCreazione: $(this).find('input[name="creationdate"]').val(),
