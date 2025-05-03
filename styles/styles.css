@@ -130,12 +130,10 @@ header {
   margin-bottom: 10px;
 }
 
-#contenedor_add_file {
-  display: flex;
-  justify-content: center;
-}
-
-#contenedor_add_user {
+#contenedor_add_file,
+#contenedor_add_user,
+#contenedor_add_group,
+#contenedor_add_bacheca {
   display: flex;
   justify-content: center;
 }

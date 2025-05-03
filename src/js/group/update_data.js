@@ -39,9 +39,9 @@ $(function () {
       buttons: {
         Delete: function () {
           $.post(
-            "src/php/user/delete_data.php",
+            "src/php/group/delete_data.php",
             {
-              id: record_to_delete,
+              codice: record_to_delete,
             },
             function (response) {
               if (!response.success) {
@@ -79,13 +79,12 @@ $(function () {
       buttons: {
         "Update information": function () {
           $.post(
-            "src/php/user/edit_data.php",
+            "src/php/group/edit_data.php",
             {
-              id: record_to_update,
-              nickname: $(this).find('input[name="nickname"]').val(),
-              nome: $(this).find('input[name="nome"]').val(),
-              cognome: $(this).find('input[name="cognome"]').val(),
-              dataNascita: $(this).find('input[name="dataNascita"]').val(),
+              codice: record_to_update,
+              creatoDa: $(this).find('input[name="createdby"]').val(),
+              nome: $(this).find('input[name="name"]').val(),
+              dataCreazione: $(this).find('input[name="creationdate"]').val(),
             },
             function (response) {
               if (!response.success) {
@@ -126,13 +125,12 @@ $(function () {
       buttons: {
         "Add information": function () {
           $.post(
-            "src/php/user/add_data.php",
+            "src/php/group/add_data.php",
             {
-              id: record_to_add,
-              nickname: $(this).find('input[name="nickname"]').val(),
-              nome: $(this).find('input[name="nome"]').val(),
-              cognome: $(this).find('input[name="cognome"]').val(),
-              dataNascita: $(this).find('input[name="dataNascita"]').val(),
+              codice: record_to_update,
+              creatoDa: $(this).find('input[name="createdby"]').val(),
+              nome: $(this).find('input[name="name"]').val(),
+              dataCreazione: $(this).find('input[name="creationdate"]').val(),
             },
             function (response) {
               if (!response.success) {

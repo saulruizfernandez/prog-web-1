@@ -6,11 +6,11 @@ if (!$conn) {
     exit;
 }
 
-$uploadedby = $_POST['uploadedby'] ?? null;
+$createdby = $_POST['creatoDa'] ?? null;
 if ($uploadedby) {
-    $checkUserQuery = "SELECT COUNT(*) AS user_exists FROM Utente WHERE codice = :uploadedby";
+    $checkUserQuery = "SELECT COUNT(*) AS user_exists FROM Utente WHERE codice = :createdby";
     $checkUserStmt = $conn->prepare($checkUserQuery);
-    $checkUserStmt->execute([':uploadedby' => $uploadedby]);
+    $checkUserStmt->execute([':createdby' => $createdby]);
     $userExists = $checkUserStmt->fetch(PDO::FETCH_ASSOC)['user_exists'];
 
     if (!$userExists) {
@@ -19,15 +19,15 @@ if ($uploadedby) {
     }
 }
 
-$query = "SELECT MIN(missing.numero) AS next_code
+$query = "SELECT MIN(missing.codice) AS next_code
           FROM (
-                SELECT 0 AS numero
+                SELECT 0 AS codice
                 UNION ALL
-                SELECT numero + 1
-                FROM FileMultimediale
+                SELECT codice + 1
+                FROM Gruppo
           ) AS missing
           WHERE NOT EXISTS (
-                SELECT 1 FROM FileMultimediale fm WHERE fm.numero = missing.numero
+                SELECT 1 FROM Gruppo g WHERE g.codice = missing.codice
           );
 ";
 
@@ -37,15 +37,13 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
 $new_codice = $row['next_code'] ?? 1;
 
 $params = [];
-$params[':filenumber'] = $new_codice;
-$params[':uploadedby'] = $_POST['uploadedby'] != '' ? $_POST['uploadedby'] : NULL;
-$params[':title'] = $_POST['title'] != '' ? $_POST['title'] : NULL;
-$params[':dimension'] = $_POST['dimension'] != '' ? $_POST['dimension'] : NULL;
-$params[':uurl'] = $_POST['uurl'] != '' ? $_POST['uurl'] : NULL;
-$params[':filetype'] = $_POST['filetype'] != '' ? $_POST['filetype'] : NULL;
+$params[':creatoDa'] = $_POST['creatoDa'] != '' ? $_POST['creatoDa'] : NULL;
+$params[':codice'] = $new_codice;
+$params[':nome'] = $_POST['nome'] != '' ? $_POST['nome'] : NULL;
+$params[':dataCreazione'] = $_POST['dataCreazione'] != '' ? $_POST['dataCreazione'] : NULL;
 
-$sql = "INSERT INTO FileMultimediale (caricatoDa, numero, titolo, dimensione, `URL`, tipo)
-        VALUES (:uploadedby, :filenumber, :title, :dimension, :uurl, :filetype)";
+$sql = "INSERT INTO Gruppo (creatoDa, codice, nome, dataCreazione)
+        VALUES (:creatoDa, :codice, :nome, :dataCreazione)";
 $stmt = $conn->prepare($sql);
 
 if ($stmt->execute($params)) {
