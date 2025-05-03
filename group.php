@@ -3,16 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ARSA social network 🤘🏼</title>
+  <title>arsanet 📡</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/styles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/title.css">
   <script src="lib/jquery-3.7.1.min.js"></script>
   <script src="lib/jquery-ui-1.14.1.custom/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="lib/jquery-ui-1.14.1.custom/jquery-ui.min.css">
   <script src="src/js/header_footer.js"></script>
-  <script src="src/js/update_data.js"></script>
+  <script src="src/js/group/update_data.js"></script>
 </head>
 <body>
   <?php include 'src/php/connection.php'; ?> 
@@ -22,55 +21,48 @@
   <div class="container">
     <div id="left_layout">
       <nav id="navigation">
-        <a href="index.php">User</a>
+        <a href="index.php" class="selected">User</a>
         <a href="notice_board.php">Notice board</a>
-        <a href="multimedia_file.php">Multimedia file</a>
-        <a href="#" class="selected">Group</a>
+        <a href="multimedia_file.php" class="selected">Multimedia file</a>
+        <a href="group.php">Group</a>
       </nav>
-      <div id="search_add_filter">
+      <div id="search_filter">
         <form method="POST" action="">
-          User code:<input type="text" name="codice"><br>
-          Nickname:<input type="text" name="nickname"><br>
-          First name:<input type="text" name="nome"><br>
-          Last name:<input type="text" name="cognome"><br>
-          Birthday: <input type="date" name="dataNascita"><br>
-          <input type="submit" value="search user">
+          CreatedBy:<input type="number" name="creatoDa"><br>
+          Code:<input type="number" name="numero"><br>
+          Name:<input type="text" name="nome"><br>
+          CreationDate:<input type="date" name="creazioneData"><br>
+          <input type="submit" value="search group">
           <input type="reset" value="reset"><br><br>
         </form>
-        <form method="POST" action="">
-          <button type="button" class="add_button" id="add_user_button">
-            <img src="media/icons/add_icon.png" alt="add_icon" style="width:50px; height:50px">
-          </button>
-        </form>
+        <div id="contenedor_add_group">
+          <button class="add_button" id="add_button_group"><strong>+ Add Group</strong></button>
+        </div>
       </div>
     </div>
     <div id="content">
 
       <?php
       $error = false;
-      $query = "SELECT * FROM Utente WHERE 1=1";
+      $query = "SELECT * FROM Gruppo WHERE 1=1";
       $params = [];
 
       if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (!empty($_POST["codice"])) {
-          $query .= " AND codice = :codice"; // placeholder
-          $params[":codice"] = $_POST["codice"];
+        if (!empty($_POST["creatoDa"])) {
+          $query .= " AND creatoDa = :creatoDa"; // placeholder
+          $params[":creatoDa"] = $_POST["creatoDa"];
         }
-        if (!empty($_POST["nickname"])) {
-          $query .= " AND nickname = :nickname";
-          $params[":nickname"] = $_POST["nickname"];
+        if (!empty($_POST["numero"])) {
+          $query .= " AND codice = :numero";
+          $params[":numero"] = $_POST["numero"];
         }
         if (!empty($_POST["nome"])) {
           $query .= " AND nome = :nome";
           $params[":nome"] = $_POST["nome"];
         }
-        if (!empty($_POST["cognome"])) {
-          $query .= " AND cognome = :cognome";
-          $params[":cognome"] = $_POST["cognome"];
-        }
-        if (!empty($_POST["dataNascita"])) {
-          $query .= " AND dataNascita = :dataNascita";
-          $params[":dataNascita"] = $_POST["dataNascita"];
+        if (!empty($_POST["creazioneData"])) {
+          $query .= " AND dataCreazione = :creazioneData";
+          $params[":creazioneData"] = $_POST["creazioneData"];
         }
       }
       $query .= " ORDER BY codice";
@@ -89,11 +81,10 @@
 
       <table class="table">
         <tr class = "header">
-          <th>Codice</th>
-          <th>Nickname</th>
+          <th>Created by</th>
+          <th>Code</th>
           <th>Name</th>
-          <th>Surname</th>
-          <th>Birthday</th>
+          <th>Date creation</th>
         </tr>
 
       <?php
@@ -107,11 +98,10 @@
       ?>
 
         <tr <?php echo $classrow; ?>>
+          <td id="<?php echo $row["codice"]; ?>_createdby"> <?php echo $row["creatoDa"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_codice"> <?php echo $row["codice"]; ?></td>
-          <td id="<?php echo $row["codice"]; ?>_nickname"> <?php echo $row["nickname"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_nome"> <?php echo $row["nome"]; ?></td>
-          <td id="<?php echo $row["codice"]; ?>_cognome"> <?php echo $row["cognome"]; ?></td>
-          <td id="<?php echo $row["codice"]; ?>_dataNascita"> <?php echo $row["dataNascita"]; ?></td>
+          <td id="<?php echo $row["codice"]; ?>_dataCreazione"> <?php echo $row["dataCreazione"]; ?></td>
           <td><button class="edit_button" id="<?php echo $row["codice"]; ?>_edit"><img src="media/icons/edit_icon.png" alt="edit_icon" style="width:30px; height:30px"></button></td>
           <td><button class="delete_button" id="<?php echo $row["codice"]; ?>_delete"><img src="media/icons/delete_icon.png" alt="delete_icon" style="width:30px; height:30px"></button></td>
         </tr>
@@ -133,19 +123,18 @@
   </div>
   <div id="edit_dialog" title="Edit record">
     <form action="" method="post">
-      User code: <input type="text" name="codice" readonly><br>
-      Nickname: <input type="text" name="nickname"><br>
-      First name: <input type="text" name="nome"><br>
-      Last name: <input type="text" name="cognome"><br>
-      Birthday: <input type="date" name="dataNascita"><br>
+      Created by: <input type="number" name="createdby"><br>
+      Code: <input type="number " name="code" readonly><br>
+      Name: <input type="text" name="name"><br>
+      Creation date: <input type="date" name="creationdate"><br>
     </form>
   </div>
   <div id="add_dialog" title="Add record">
     <form action="" method="post">
-      Nickname: <input type="text" name="nickname"><br>
-      First name: <input type="text" name="nome"><br>
-      Last name: <input type="text" name="cognome"><br>
-      Birthday: <input type="date" name="dataNascita"><br>
+      Created by: <input type="number" name="createdby"><br>
+      Code: <input type="number " name="code" readonly><br>
+      Name: <input type="text" name="name"><br>
+      Creation date: <input type="date" name="creationdate"><br>
     </form>
   </div>
   <div id="footer"></div>
