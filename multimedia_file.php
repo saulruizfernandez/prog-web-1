@@ -116,7 +116,11 @@
       ?>
 
         <tr <?php echo $classrow; ?>>
-          <td id="<?php echo $row["numero"]; ?>_uploadedby"> <?php echo $row["caricatoDa"]; ?></td>
+          <td id="<?php echo $row["numero"]; ?>_uploadedby">
+            <a href="index.php?search_filter=<?php echo urlencode($row['caricatoDa']); ?>"> 
+              <?php echo $row["caricatoDa"]; ?> 
+            </a>
+          </td>
           <td id="<?php echo $row["numero"]; ?>_number"> <?php echo $row["numero"]; ?></td>
           <td id="<?php echo $row["numero"]; ?>_title"> <?php echo $row["titolo"]; ?></td>
           <td id="<?php echo $row["numero"]; ?>_dimension"> <?php echo $row["dimensione"]; ?></td>

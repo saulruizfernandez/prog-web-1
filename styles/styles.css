@@ -230,3 +230,11 @@ footer {
 #navigation a.selected {
   background-color: black;
 }
+
+#navigation a.selected:hover {
+  color: #90a955;
+}
+
+a:visited {
+  color: blue;
+}

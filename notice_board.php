@@ -92,7 +92,11 @@
       ?>
 
         <tr <?php echo $classrow; ?>>
-          <td id="<?php echo $row["codiceUtente"]; ?>_codiceUtente"> <?php echo $row["codiceUtente"]; ?></td>
+          <td id="<?php echo $row["codiceUtente"]; ?>_codiceUtente">
+            <a href="index.php?search_filter=<?php echo urlencode($row['codiceUtente']); ?>"> 
+              <?php echo $row["codiceUtente"]; ?> 
+            </a>
+          </td>
           <td id="<?php echo $row["codiceUtente"]; ?>_nome"> <?php echo $row["nome"]; ?></td>
           <td id="<?php echo $row["codiceUtente"]; ?>_dataCreazione"> <?php echo $row["dataCreazione"]; ?></td>
           <td><button class="edit_button" id="<?php echo $row["codiceUtente"]; ?>_edit"><img src="media/icons/edit_icon.png" alt="edit_icon" style="width:30px; height:30px"></button></td>

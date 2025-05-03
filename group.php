@@ -98,7 +98,11 @@
       ?>
 
         <tr <?php echo $classrow; ?>>
-          <td id="<?php echo $row["codice"]; ?>_createdby"> <?php echo $row["creatoDa"]; ?></td>
+          <td id="<?php echo $row["codice"]; ?>_createdby">
+            <a href="index.php?search_filter=<?php echo urlencode($row['creatoDa']); ?>"> 
+              <?php echo $row["creatoDa"]; ?>
+            </a>
+          </td>
           <td id="<?php echo $row["codice"]; ?>_codice"> <?php echo $row["codice"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_nome"> <?php echo $row["nome"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_dataCreazione"> <?php echo $row["dataCreazione"]; ?></td>
