@@ -1,4 +1,24 @@
 $(function () {
+  function validateForm(data) {
+    const errors = [];
+
+    if (!/^[a-zA-Z0-9]*$/.test(data.titolo)) {
+      errors.push("Titolo can only have letters and numbers");
+    }
+    if (!/^([0-9]*\.[0-9]*)?$/.test(data.dimensione)) {
+      errors.push("The dimension can only be a decimal number");
+    }
+    if (
+      !/^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/.test(
+        data.uurl
+      )
+    ) {
+      errors.push("The URL you inserted is not valid");
+    }
+
+    return errors;
+  }
+
   function fill_form_values(record_to_update) {
     $("#edit_dialog form input").each(function () {
       if ($(this).attr("name") === "uploadedby") {
@@ -85,6 +105,17 @@ $(function () {
       modal: true,
       buttons: {
         "Update information": function () {
+          const data = {
+            titolo: $(this).find('input[name="title"]').val(),
+            dimensione: $(this).find('input[name="dimension"]').val(),
+            uurl: $(this).find('input[name="uurl"]').val(),
+          };
+          const errors = validateForm(data);
+          if (errors.length > 0) {
+            $("#error_log_message").text(errors.join("........"));
+            $(this).dialog("close");
+            return;
+          }
           $.post(
             "src/php/multimedia-file/edit_data.php",
             {
@@ -133,6 +164,17 @@ $(function () {
       modal: true,
       buttons: {
         "Add information": function () {
+          const data = {
+            titolo: $(this).find('input[name="title"]').val(),
+            dimensione: $(this).find('input[name="dimension"]').val(),
+            uurl: $(this).find('input[name="uurl"]').val(),
+          };
+          const errors = validateForm(data);
+          if (errors.length > 0) {
+            $("#error_log_message").text(errors.join("........"));
+            $(this).dialog("close");
+            return;
+          }
           $.post(
             "src/php/multimedia-file/add_data.php",
             {

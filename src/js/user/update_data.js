@@ -100,7 +100,8 @@ $(function () {
           };
           const errors = validateForm(data);
           if (errors.length > 0) {
-            $("#error_log_message").text(errors.join("; "));
+            $("#error_log_message").text(errors.join("........"));
+            $(this).dialog("close");
             return;
           }
           $.post(
@@ -158,8 +159,9 @@ $(function () {
           };
           const errors = validateForm(data);
           if (errors.length > 0) {
-            $("#error_log_message").text(errors.join("; "));
+            $("#error_log_message").text(errors.join("........"));
             $(this).dialog("close");
+            return;
           }
           $.post(
             "src/php/user/add_data.php",
