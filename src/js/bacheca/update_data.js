@@ -1,4 +1,12 @@
 $(function () {
+  function validateForm(data) {
+    const errors = [];
+    if (!/^[a-zA-Z0-9]*$/.test(data.nome)) {
+      errors.push("Name can only have letters and numbers");
+    }
+    return errors;
+  }
+
   function fill_form_values(record_to_update) {
     $("#edit_dialog form input").each(function () {
       if ($(this).attr("name") === "codiceUtente") {
@@ -81,6 +89,15 @@ $(function () {
       modal: true,
       buttons: {
         "Update information": function () {
+          const data = {
+            nome: $(this).find('input[name="nome"]').val(),
+          };
+          const errors = validateForm(data);
+          if (errors.length > 0) {
+            $("#error_log_message").text(errors.join("........"));
+            $(this).dialog("close");
+            return;
+          }
           $.post(
             "src/php/bacheca/edit_data.php",
             {
@@ -128,6 +145,15 @@ $(function () {
       modal: true,
       buttons: {
         "Add information": function () {
+          const data = {
+            nome: $(this).find('input[name="nome"]').val(),
+          };
+          const errors = validateForm(data);
+          if (errors.length > 0) {
+            $("#error_log_message").text(errors.join("........"));
+            $(this).dialog("close");
+            return;
+          }
           $.post(
             "src/php/bacheca/add_data.php",
             {

@@ -9,7 +9,7 @@ $(function () {
       errors.push("The dimension can only be a decimal number");
     }
     if (
-      !/^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?$/.test(
+      !/^((https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?)?$/.test(
         data.uurl
       )
     ) {
