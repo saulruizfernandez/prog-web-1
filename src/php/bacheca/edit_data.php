@@ -1,17 +1,18 @@
 <?php
 header('Content-Type: application/json');
 include __DIR__ . '/../connection.php';
+
 if (!$conn) {
-    echo json_encode(['success' => false]);
-    exit;
+  echo json_encode(['success' => false, 'error' => 'No DB connection']);
+  exit;
 }
 
 $codiceUtente = $_POST['codiceUtente'] ?? null;
 $nome = trim($_POST['nome'] ?? '');
 $dataCreazione = $_POST['dataCreazione'] ?? null;
 
-if ($codiceUtente === null || $nome === '') {
-  echo json_encode(['success' => false, 'error' => 'User code and name are required']);
+if ($nome === '') {
+  echo json_encode(['success' => false, 'error' => 'Notice board name is required']);
   exit;
 }
 
@@ -47,7 +48,7 @@ $stmt = $conn->prepare($sql); // statement = stmt
 if ($stmt->execute($params)) {
   echo json_encode(['success' => true]); // response to client (update_data.js)\
 } else {
-  echo json_encode(['success' => false, 'error' => 'Database error']);
+  echo json_encode(['success' => false, 'error' => 'Error in edit']);
   http_response_code(500);
 }
 ?>

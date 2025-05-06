@@ -1,9 +1,10 @@
 <?php
 header('Content-Type: application/json');
 include __DIR__ . '/../connection.php';
+
 if (!$conn) {
-    echo json_encode(['success' => false]);
-    exit;
+  echo json_encode(['success' => false, 'error' => 'No DB connection']);
+  exit;
 }
 
 $params = [];
@@ -14,12 +15,12 @@ $params[':cognome'] = $_POST['cognome'] != '' ? $_POST['cognome'] : NULL;
 $params[':dataNascita'] = $_POST['dataNascita'] != '' ? $_POST['dataNascita'] : NULL;
 
 $sql = "UPDATE Utente SET nickname = :nickname, nome = :nome, cognome = :cognome, dataNascita = :dataNascita WHERE codice = :codice";
-$stmt = $conn->prepare($sql); // statement = stmt
+$stmt = $conn->prepare($sql);
 
 if ($stmt->execute($params)) {
-  echo json_encode(['success' => true]); // response to client (update_data.js)
+  echo json_encode(['success' => true]);
 } else {
-  echo json_encode(['success' => false, 'error' => 'Database error']);
+  echo json_encode(['success' => false, 'error' => 'Error in edit']);
   http_response_code(500);
 }
 ?>

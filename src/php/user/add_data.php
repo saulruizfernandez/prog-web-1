@@ -1,9 +1,10 @@
 <?php
 header('Content-Type: application/json');
 include __DIR__ . '/../connection.php';
+
 if (!$conn) {
-    echo json_encode(['success' => false]);
-    exit;
+  echo json_encode(['success' => false, 'error' => 'No DB connection']);
+  exit;
 }
 
 $query = "SELECT MIN(missing.codice) AS next_code
@@ -37,7 +38,6 @@ $stmt = $conn->prepare($sql);
 if ($stmt->execute($params)) {
   echo json_encode(['success' => true]); // response to client (update_data.js)
 } else {
-  echo json_encode(['success' => false, 'error' => 'Database error']);
-  http_response_code(500);
+  echo json_encode(['success' => false, 'error' => 'Error in addition']);
 }
 ?>

@@ -238,3 +238,7 @@ footer {
 a:visited {
   color: blue;
 }
+
+#header_bar {
+  min-width: 100%;
+}

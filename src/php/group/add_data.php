@@ -1,20 +1,21 @@
 <?php
 header('Content-Type: application/json');
 include __DIR__ . '/../connection.php';
+
 if (!$conn) {
-    echo json_encode(['success' => false]);
-    exit;
+  echo json_encode(['success' => false, 'error' => 'No DB connection']);
+  exit;
 }
 
 $createdby = $_POST['creatoDa'] ?? null;
-if ($uploadedby) {
+if ($createdby) {
     $checkUserQuery = "SELECT COUNT(*) AS user_exists FROM Utente WHERE codice = :createdby";
     $checkUserStmt = $conn->prepare($checkUserQuery);
     $checkUserStmt->execute([':createdby' => $createdby]);
     $userExists = $checkUserStmt->fetch(PDO::FETCH_ASSOC)['user_exists'];
 
     if (!$userExists) {
-        echo json_encode(['success' => false, 'error' => 'The user does not exist']);
+        echo json_encode(['success' => false, 'error' => 'The user doesn\'t exist']);
         exit;
     }
 }
@@ -47,9 +48,8 @@ $sql = "INSERT INTO Gruppo (creatoDa, codice, nome, dataCreazione)
 $stmt = $conn->prepare($sql);
 
 if ($stmt->execute($params)) {
-  echo json_encode(['success' => true]); // response to client (update_data.js)
+  echo json_encode(['success' => true]);
 } else {
-  echo json_encode(['success' => false, 'error' => 'Database error']);
-  http_response_code(500);
+  echo json_encode(['success' => false, 'error' => 'Error in addition']);
 }
 ?>

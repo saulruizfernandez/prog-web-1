@@ -14,8 +14,8 @@ $codiceUtente = $_POST['codiceUtente'] ?? null;
 $nome = trim($_POST['nome'] ?? '');
 $dataCreazione = $_POST['dataCreazione'] ?? null;
 
-if ($codiceUtente === null || $nome === '') {
-  echo json_encode(['success' => false, 'error' => 'User code and name are required']);
+if ($nome === '') {
+  echo json_encode(['success' => false, 'error' => 'Notice board name is required']);
   exit;
 }
 
@@ -53,7 +53,7 @@ $stmt = $conn->prepare($sql);
 if ($stmt->execute($params)) {
     echo json_encode(['success' => true]);
 } else {
-    echo json_encode(['success' => false, 'error' => 'Database error']);
+    echo json_encode(['success' => false, 'error' => 'Error in addition']);
     http_response_code(500);
 }
 ?>
