@@ -44,8 +44,8 @@ $(function () {
               codice: record_to_delete,
             },
             function (response) {
-              if (!response.success) {
-                alert("Error in deletion.");
+              if (response && !response.success) {
+                $("#error_log_message").text(response.error);
               } else {
                 // Force table reload after deletion
                 $("#search_filter form").submit();
@@ -87,8 +87,8 @@ $(function () {
               dataCreazione: $(this).find('input[name="creationdate"]').val(),
             },
             function (response) {
-              if (!response.success) {
-                alert("Error in update.");
+              if (response && !response.success) {
+                $("#error_log_message").text(response.error);
               } else {
                 // Force table reload after update
                 $("#search_filter form").submit();
@@ -133,8 +133,8 @@ $(function () {
               dataCreazione: $(this).find('input[name="creationdate"]').val(),
             },
             function (response) {
-              if (!response.success) {
-                alert("Error in addition.");
+              if (response && !response.success) {
+                $("#error_log_message").text(response.error);
               } else {
                 // Force table reload after addition
                 $("#search_filter form").submit();

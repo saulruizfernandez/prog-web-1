@@ -51,8 +51,8 @@ $(function () {
               filenumber: record_to_delete,
             },
             function (response) {
-              if (!response.success) {
-                alert("Error in deletion.");
+              if (response && !response.success) {
+                $("#error_log_message").text(response.error);
               } else {
                 // Force table reload after deletion
                 $("#search_filter form").submit();
@@ -96,8 +96,8 @@ $(function () {
               filetype: $(this).find('select[name="filetype"]').val(),
             },
             function (response) {
-              if (!response.success) {
-                alert("Error in update: " + response.error);
+              if (response && !response.success) {
+                $("#error_log_message").text(response.error);
               } else {
                 // Force table reload after update
                 $("#search_filter form").submit();
@@ -144,8 +144,8 @@ $(function () {
               filetype: $(this).find('select[name="filetype"]').val(),
             },
             function (response) {
-              if (!response.success) {
-                alert("Error in addition: " + response.error);
+              if (response && !response.success) {
+                $("#error_log_message").text(response.error);
               } else {
                 // Force table reload after addition
                 $("#search_filter form").submit();

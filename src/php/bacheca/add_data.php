@@ -14,8 +14,8 @@ $codiceUtente = $_POST['codiceUtente'] ?? null;
 $nome = trim($_POST['nome'] ?? '');
 $dataCreazione = $_POST['dataCreazione'] ?? null;
 
-if ($nome === '') {
-  echo json_encode(['success' => false, 'error' => 'Notice board name is required']);
+if ($nome === '' || $codiceUtente === '') {
+  echo json_encode(['success' => false, 'error' => 'Notice board name and user code are required']);
   exit;
 }
 

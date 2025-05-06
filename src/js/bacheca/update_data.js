@@ -2,11 +2,23 @@ $(function () {
   function fill_form_values(record_to_update) {
     $("#edit_dialog form input").each(function () {
       if ($(this).attr("name") === "codiceUtente") {
-        $(this).val($("#" + record_to_update + "_codiceUtente").text().trim());
+        $(this).val(
+          $("#" + record_to_update + "_codiceUtente")
+            .text()
+            .trim()
+        );
       } else if ($(this).attr("name") === "nome") {
-        $(this).val($("#" + record_to_update + "_nome").text().trim());
+        $(this).val(
+          $("#" + record_to_update + "_nome")
+            .text()
+            .trim()
+        );
       } else if ($(this).attr("name") === "dataCreazione") {
-        $(this).val($("#" + record_to_update + "_dataCreazione").text().trim());
+        $(this).val(
+          $("#" + record_to_update + "_dataCreazione")
+            .text()
+            .trim()
+        );
       }
     });
   }
@@ -34,8 +46,8 @@ $(function () {
               id: record_to_delete,
             },
             function (response) {
-              if (!response.success) {
-                alert("Error in deletion.");
+              if (response && !response.success) {
+                $("#error_log_message").text(response.error);
               } else {
                 // Force table reload after deletion
                 $("#search_add_filter form").submit();
@@ -78,8 +90,8 @@ $(function () {
               dataCreazione: $(this).find('input[name="dataCreazione"]').val(),
             },
             function (response) {
-              if (!response.success) {
-                alert("Error in update.");
+              if (response && !response.success) {
+                $("#error_log_message").text(response.error);
               } else {
                 // Force table reload after update
                 $("#search_add_filter form").submit();
@@ -98,7 +110,7 @@ $(function () {
     });
   });
 
-  $("#add_user_button").on("click", function () {
+  $("#add_button_bacheca").on("click", function () {
     const record_to_add = $(this).attr("id").replace(/\D/g, "");
     fill_form_values(record_to_add);
     $("#add_dialog").dialog({
@@ -116,7 +128,6 @@ $(function () {
       modal: true,
       buttons: {
         "Add information": function () {
-
           $.post(
             "src/php/bacheca/add_data.php",
             {
@@ -126,8 +137,8 @@ $(function () {
               dataCreazione: $(this).find('input[name="dataCreazione"]').val(),
             },
             function (response) {
-              if (!response.success) {
-                alert("Error in addition.");
+              if (response && !response.success) {
+                $("#error_log_message").text(response.error);
               } else {
                 // Force table reload after addition
                 $("#search_add_filter form").submit();
@@ -136,14 +147,13 @@ $(function () {
             "json"
           ).fail(function (jqXHR, textStatus, errorThrown) {
             alert("Server error: " + textStatus + " - " + errorThrown);
-          }
-          );
+          });
           $(this).dialog("close");
         },
         Cancel: function () {
           $(this).dialog("close");
         },
-      }
+      },
     });
   });
 });
