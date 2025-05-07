@@ -84,6 +84,8 @@ header {
   display: grid;
   grid-template-columns: 1fr 6fr;
   grid-template-rows: auto;
+  overflow-x: auto;
+  width: 100%;
 }
 
 /* Subcontenedor para navigation y search_filter */
@@ -219,6 +221,7 @@ footer {
 
 #footer_text {
   color: white;
+  font-size: 25px;
   position: absolute;
   top: 50%;
   left: 50%;
