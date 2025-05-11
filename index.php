@@ -21,7 +21,6 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/styles.css">
-  <link rel="stylesheet" href="styles/title.css">
   <script src="lib/jquery-3.7.1.min.js"></script>
   <script src="lib/jquery-ui-1.14.1.custom/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="lib/jquery-ui-1.14.1.custom/jquery-ui.min.css">
@@ -43,10 +42,10 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
       </nav>
       <div id="search_filter">
         <form method="POST" action="">
-          User code:<input type="text" name="codice"><br>
+          <input type="text" name="codice" style="display: none;">
           Nickname:<input type="text" name="nickname"><br>
-          First name:<input type="text" name="nome"><br>
-          Last name:<input type="text" name="cognome"><br>
+          Name:<input type="text" name="nome"><br>
+          Surname:<input type="text" name="cognome"><br>
           Birthday: <input type="date" name="dataNascita"><br><br>
           <input type="submit" value="search user">
           <input type="reset" value="reset"><br><br>
@@ -61,32 +60,60 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
 
       <?php
       $error = false;
-      $query = "SELECT * FROM Utente WHERE 1=1";
+      $query = "SELECT 
+                  u.codice, 
+                  u.nickname, 
+                  u.nome, 
+                  u.cognome, 
+                  u.dataNascita, 
+                  (
+                    SELECT COUNT(*) 
+                    FROM (
+                      SELECT DISTINCT b2.nome, b2.codiceUtente
+                      FROM Bacheca b2
+                      WHERE b2.codiceUtente = u.codice
+                        AND b2.nome IS NOT NULL 
+                        AND b2.codiceUtente IS NOT NULL
+                    ) AS dist_bachecas
+                  ) AS bachecasCreadas,
+                  (
+                    SELECT COUNT(*) 
+                    FROM (
+                      SELECT DISTINCT c2.nomeBacheca, c2.codUtente
+                      FROM UtenteAutorizzatoBacheca c2
+                      WHERE c2.utenteAutorizzato = u.codice
+                        AND c2.nomeBacheca IS NOT NULL 
+                        AND c2.codUtente IS NOT NULL
+                    ) AS dist_autorizzate
+                  ) AS bachecasAcceso
+                FROM Utente u
+                WHERE 1=1;
+                ";
       $params = [];
 
       if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!empty($_POST["codice"])) {
-          $query .= " AND codice = :codice"; // placeholder
+          $query .= " AND u.codice = :codice"; // placeholder
           $params[":codice"] = $_POST["codice"];
         }
         if (!empty($_POST["nickname"])) {
-          $query .= " AND nickname = :nickname";
+          $query .= " AND u.nickname = :nickname";
           $params[":nickname"] = $_POST["nickname"];
         }
         if (!empty($_POST["nome"])) {
-          $query .= " AND nome = :nome";
+          $query .= " AND u.nome = :nome";
           $params[":nome"] = $_POST["nome"];
         }
         if (!empty($_POST["cognome"])) {
-          $query .= " AND cognome = :cognome";
+          $query .= " AND u.cognome = :cognome";
           $params[":cognome"] = $_POST["cognome"];
         }
         if (!empty($_POST["dataNascita"])) {
-          $query .= " AND dataNascita = :dataNascita";
+          $query .= " AND u.dataNascita = :dataNascita";
           $params[":dataNascita"] = $_POST["dataNascita"];
         }
       }
-      $query .= " ORDER BY codice";
+      $query .= " GROUP BY u.codice, u.nickname, u.nome, u.cognome, u.dataNascita";
 
       try {
         $aux = $conn->prepare($query);
@@ -107,6 +134,10 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
           <th>Name</th>
           <th>Surname</th>
           <th>Birthday</th>
+          <th style="word-wrap: break-word; white-space: normal; max-width: 150px;">Noticeboards that has created</th>
+          <th style="word-wrap: break-word; white-space: normal; max-width: 150px;">Noticeboards to which it has access</th>
+          <!-- <th>Groups that has created</th>
+          <th>Groups to which it has access</th> -->
         </tr>
 
       <?php
@@ -125,6 +156,8 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
           <td id="<?php echo $row["codice"]; ?>_nome"> <?php echo $row["nome"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_cognome"> <?php echo $row["cognome"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_dataNascita"> <?php echo $row["dataNascita"]; ?></td>
+          <td id="<?php echo $row["codice"]; ?>_bachecasCreadas"> <?php echo $row["bachecasCreadas"]; ?></td>
+          <td id="<?php echo $row["codice"]; ?>_bachecasAcceso"> <?php echo $row["bachecasAcceso"]; ?></td>
           <td><button class="edit_button" id="<?php echo $row["codice"]; ?>_edit"><img src="media/icons/edit_icon.png" alt="edit_icon" style="width:30px; height:30px"></button></td>
           <td><button class="delete_button" id="<?php echo $row["codice"]; ?>_delete"><img src="media/icons/delete_icon.png" alt="delete_icon" style="width:30px; height:30px"></button></td>
         </tr>
