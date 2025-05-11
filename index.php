@@ -61,19 +61,17 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
       <?php
       $error = false;
       $query = "SELECT 
-                  u.codice, 
-                  u.nickname, 
-                  u.nome, 
-                  u.cognome, 
-                  u.dataNascita, 
+                  U.codice, 
+                  U.nickname, 
+                  U.nome, 
+                  U.cognome, 
+                  U.dataNascita, 
                   (
                     SELECT COUNT(*) 
                     FROM (
                       SELECT DISTINCT b.nome, b.codiceUtente
                       FROM Bacheca b
-                      WHERE b.codiceUtente = u.codice
-                        AND b.nome IS NOT NULL 
-                        AND b.codiceUtente IS NOT NULL
+                      WHERE b.codiceUtente = U.codice
                     ) AS cero
                   ) AS bachecasCreadas,
                   (
@@ -81,9 +79,7 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
                     FROM (
                       SELECT DISTINCT c.nomeBacheca, c.codUtente
                       FROM UtenteAutorizzatoBacheca c
-                      WHERE c.utenteAutorizzato = u.codice
-                        AND c.nomeBacheca IS NOT NULL 
-                        AND c.codUtente IS NOT NULL
+                      WHERE c.utenteAutorizzato = U.codice
                     ) AS uno
                   ) AS bachecasAcceso,
                   (
@@ -91,7 +87,7 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
                     FROM (
                       SELECT DISTINCT d.codice
                       FROM Gruppo d
-                      WHERE d.creatoDa = u.codice
+                      WHERE d.creatoDa = U.codice
                     ) AS dos
                   ) AS gruposCreados,
                   (
@@ -99,36 +95,91 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
                     FROM (
                       SELECT DISTINCT e.codGruppo
                       FROM UtenteAutorizzatoGruppo e
-                      WHERE e.codUtente = u.codice
+                      WHERE e.codUtente = U.codice
                     ) AS tres
                   ) AS gruposAcceso
-                FROM Utente u
-                WHERE 1=1
-                ";
+                FROM Utente U
+                WHERE 1=1";
       $params = [];
       if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (!empty($_POST["codice"])) {
-          $query .= " AND u.codice = :codice"; // placeholder
-          $params[":codice"] = $_POST["codice"];
-        }
-        if (!empty($_POST["nickname"])) {
-          $query .= " AND u.nickname = :nickname";
-          $params[":nickname"] = $_POST["nickname"];
-        }
-        if (!empty($_POST["nome"])) {
-          $query .= " AND u.nome = :nome";
-          $params[":nome"] = $_POST["nome"];
-        }
-        if (!empty($_POST["cognome"])) {
-          $query .= " AND u.cognome = :cognome";
-          $params[":cognome"] = $_POST["cognome"];
-        }
-        if (!empty($_POST["dataNascita"])) {
-          $query .= " AND u.dataNascita = :dataNascita";
-          $params[":dataNascita"] = $_POST["dataNascita"];
-        }
+          if (!empty($_POST["codice"])) {
+              if (strpos($_POST["codice"], ',') !== false) {
+                  $values = array_map('trim', explode(',', $_POST["codice"]));
+                  $placeholders = [];
+                  foreach ($values as $index => $value) {
+                      $placeholder = ":codice_$index";
+                      $placeholders[] = $placeholder;
+                      $params[$placeholder] = $value;
+                  }
+                  $query .= " AND U.codice IN (" . implode(',', $placeholders) . ")";
+              } else {
+                  $query .= " AND U.codice = :codice";
+                  $params[":codice"] = $_POST["codice"];
+              }
+          }
+          if (!empty($_POST["nickname"])) {
+              if (strpos($_POST["nickname"], ',') !== false) {
+                  $values = array_map('trim', explode(',', $_POST["nickname"]));
+                  $placeholders = [];
+                  foreach ($values as $index => $value) {
+                      $placeholder = ":nickname_$index";
+                      $placeholders[] = $placeholder;
+                      $params[$placeholder] = $value;
+                  }
+                  $query .= " AND U.nickname IN (" . implode(',', $placeholders) . ")";
+              } else {
+                  $query .= " AND U.nickname = :nickname";
+                  $params[":nickname"] = $_POST["nickname"];
+              }
+          }
+          if (!empty($_POST["nome"])) {
+              if (strpos($_POST["nome"], ',') !== false) {
+                  $values = array_map('trim', explode(',', $_POST["nome"]));
+                  $placeholders = [];
+                  foreach ($values as $index => $value) {
+                      $placeholder = ":nome_$index";
+                      $placeholders[] = $placeholder;
+                      $params[$placeholder] = $value;
+                  }
+                  $query .= " AND U.nome IN (" . implode(',', $placeholders) . ")";
+              } else {
+                  $query .= " AND U.nome = :nome";
+                  $params[":nome"] = $_POST["nome"];
+              }
+          }
+          if (!empty($_POST["cognome"])) {
+              if (strpos($_POST["cognome"], ',') !== false) {
+                  $values = array_map('trim', explode(',', $_POST["cognome"]));
+                  $placeholders = [];
+                  foreach ($values as $index => $value) {
+                      $placeholder = ":cognome_$index";
+                      $placeholders[] = $placeholder;
+                      $params[$placeholder] = $value;
+                  }
+                  $query .= " AND U.cognome IN (" . implode(',', $placeholders) . ")";
+              } else {
+                  $query .= " AND U.cognome = :cognome";
+                  $params[":cognome"] = $_POST["cognome"];
+              }
+          }
+          if (!empty($_POST["dataNascita"])) {
+              if (strpos($_POST["dataNascita"], ',') !== false) {
+                  $values = array_map('trim', explode(',', $_POST["dataNascita"]));
+                  $placeholders = [];
+                  foreach ($values as $index => $value) {
+                      $placeholder = ":dataNascita_$index";
+                      $placeholders[] = $placeholder;
+                      $params[$placeholder] = $value;
+                  }
+                  $query .= " AND U.dataNascita IN (" . implode(',', $placeholders) . ")";
+              } else {
+                  $query .= " AND U.dataNascita = :dataNascita";
+                  $params[":dataNascita"] = $_POST["dataNascita"];
+              }
+          }
       }
-      $query .= " GROUP BY u.codice, u.nickname, u.nome, u.cognome, u.dataNascita";
+      $query .= " GROUP BY U.codice, U.nickname, U.nome, U.cognome, U.dataNascita";
+
 
       try {
         $aux = $conn->prepare($query);
@@ -171,9 +222,21 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
           <td id="<?php echo $row["codice"]; ?>_nome"> <?php echo $row["nome"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_cognome"> <?php echo $row["cognome"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_dataNascita"> <?php echo $row["dataNascita"]; ?></td>
-          <td id="<?php echo $row["codice"]; ?>_bachecasCreadas"> <?php echo $row["bachecasCreadas"]; ?></td>
-          <td id="<?php echo $row["codice"]; ?>_bachecasAcceso"> <?php echo $row["bachecasAcceso"]; ?></td>
-          <td id="<?php echo $row["codice"]; ?>_gruposCreados"> <?php echo $row["gruposCreados"]; ?></td>
+          <td id="<?php echo $row["codice"]; ?>_bachecasCreadas">
+            <a href="notice_board.php?search_filter=<?php echo urlencode($row["codice"]); ?>"> 
+              <?php echo $row["bachecasCreadas"]; ?> 
+            </a>
+          </td>
+          <td id="<?php echo $row["codice"]; ?>_bachecasAcceso">
+          <a href="notice_board.php?search_filter=<?php echo urlencode($row["codice"]); ?>"> 
+              <?php echo $row["bachecasAcceso"]; ?> 
+            </a>
+          </td>
+          <td id="<?php echo $row["codice"]; ?>_gruposCreados">
+          <a href="group.php?search_filter=<?php echo urlencode($row["codice"]); ?>"> 
+              <?php echo $row["gruposCreados"]; ?> 
+            </a>
+          </td>
           <td id="<?php echo $row["codice"]; ?>_gruposAcceso"> <?php echo $row["gruposAcceso"]; ?></td>
           <td><button class="edit_button" id="<?php echo $row["codice"]; ?>_edit"><img src="media/icons/edit_icon.png" alt="edit_icon" style="width:30px; height:30px"></button></td>
           <td><button class="delete_button" id="<?php echo $row["codice"]; ?>_delete"><img src="media/icons/delete_icon.png" alt="delete_icon" style="width:30px; height:30px"></button></td>

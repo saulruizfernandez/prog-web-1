@@ -1,9 +1,24 @@
+<?php
+$searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>arsanet 📡</title>
+  <script>
+    // Executes the search if the table is linked
+    window.onload = function() {
+        const searchFilter = "<?php echo $searchFilter; ?>";
+        if (searchFilter) {
+            $("#search_filter input[name=creatoDa]").val(searchFilter);
+            window.history.replaceState({}, document.title, window.location.pathname);
+            $("#search_filter form").submit();
+        }
+    };
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/styles.css">
   <link rel="stylesheet" href="styles/title.css">
@@ -28,8 +43,8 @@
       </nav>
       <div id="search_filter">
         <form method="POST" action="">
-          CreatedBy:<input type="number" name="creatoDa"><br>
-          Code:<input type="number" name="numero"><br>
+          CreatedBy:<input type="text" name="creatoDa"><br>
+          Code:<input type="text" name="numero"><br>
           Name:<input type="text" name="nome"><br>
           CreationDate:<input type="date" name="creazioneData"><br>
           <input type="submit" value="search group">
@@ -46,24 +61,67 @@
       $error = false;
       $query = "SELECT * FROM Gruppo WHERE 1=1";
       $params = [];
-
       if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (!empty($_POST["creatoDa"])) {
-          $query .= " AND creatoDa = :creatoDa"; // placeholder
-          $params[":creatoDa"] = $_POST["creatoDa"];
-        }
-        if (!empty($_POST["numero"])) {
-          $query .= " AND codice = :numero";
-          $params[":numero"] = $_POST["numero"];
-        }
-        if (!empty($_POST["nome"])) {
-          $query .= " AND nome = :nome";
-          $params[":nome"] = $_POST["nome"];
-        }
-        if (!empty($_POST["creazioneData"])) {
-          $query .= " AND dataCreazione = :creazioneData";
-          $params[":creazioneData"] = $_POST["creazioneData"];
-        }
+          if (!empty($_POST["creatoDa"])) {
+              if (strpos($_POST["creatoDa"], ',') !== false) {
+                  $values = array_map('trim', explode(',', $_POST["creatoDa"]));
+                  $placeholders = [];
+                  foreach ($values as $index => $value) {
+                      $placeholder = ":creatoDa_$index";
+                      $placeholders[] = $placeholder;
+                      $params[$placeholder] = $value;
+                  }
+                  $query .= " AND creatoDa IN (" . implode(',', $placeholders) . ")";
+              } else {
+                  $query .= " AND creatoDa = :creatoDa";
+                  $params[":creatoDa"] = $_POST["creatoDa"];
+              }
+          }
+          if (!empty($_POST["numero"])) {
+              if (strpos($_POST["numero"], ',') !== false) {
+                  $values = array_map('trim', explode(',', $_POST["numero"]));
+                  $placeholders = [];
+                  foreach ($values as $index => $value) {
+                      $placeholder = ":numero_$index";
+                      $placeholders[] = $placeholder;
+                      $params[$placeholder] = $value;
+                  }
+                  $query .= " AND codice IN (" . implode(',', $placeholders) . ")";
+              } else {
+                  $query .= " AND codice = :numero";
+                  $params[":numero"] = $_POST["numero"];
+              }
+          }
+          if (!empty($_POST["nome"])) {
+              if (strpos($_POST["nome"], ',') !== false) {
+                  $values = array_map('trim', explode(',', $_POST["nome"]));
+                  $placeholders = [];
+                  foreach ($values as $index => $value) {
+                      $placeholder = ":nome_$index";
+                      $placeholders[] = $placeholder;
+                      $params[$placeholder] = $value;
+                  }
+                  $query .= " AND nome IN (" . implode(',', $placeholders) . ")";
+              } else {
+                  $query .= " AND nome = :nome";
+                  $params[":nome"] = $_POST["nome"];
+              }
+          }
+          if (!empty($_POST["creazioneData"])) {
+              if (strpos($_POST["creazioneData"], ',') !== false) {
+                  $values = array_map('trim', explode(',', $_POST["creazioneData"]));
+                  $placeholders = [];
+                  foreach ($values as $index => $value) {
+                      $placeholder = ":creazioneData_$index";
+                      $placeholders[] = $placeholder;
+                      $params[$placeholder] = $value;
+                  }
+                  $query .= " AND dataCreazione IN (" . implode(',', $placeholders) . ")";
+              } else {
+                  $query .= " AND dataCreazione = :creazioneData";
+                  $params[":creazioneData"] = $_POST["creazioneData"];
+              }
+          }
       }
       $query .= " ORDER BY codice";
 

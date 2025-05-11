@@ -1,9 +1,24 @@
+<?php
+$searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>arsanet 📡</title>
+  <script>
+    // Executes the search if the table is linked
+    window.onload = function() {
+        const searchFilter = "<?php echo $searchFilter; ?>";
+        if (searchFilter) {
+            $("#search_filter input[name=codiceUtente]").val(searchFilter);
+            window.history.replaceState({}, document.title, window.location.pathname);
+            $("#search_filter form").submit();
+        }
+    };
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/styles.css">
   <link rel="stylesheet" href="styles/title.css">
@@ -45,20 +60,52 @@
       $error = false;
       $query = "SELECT * FROM Bacheca WHERE 1=1";
       $params = [];
-
       if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (!empty($_POST["codiceUtente"])) {
-          $query .= " AND codiceUtente = :codiceUtente"; // placeholder
-          $params[":codiceUtente"] = $_POST["codiceUtente"];
-        }
-        if (!empty($_POST["nome"])) {
-          $query .= " AND nome = :nome";
-          $params[":nome"] = $_POST["nome"];
-        }
-        if (!empty($_POST["dataCreazione"])) {
-          $query .= " AND dataCreazione = :dataCreazione";
-          $params[":dataCreazione"] = $_POST["dataCreazione"];
-        }
+          if (!empty($_POST["codiceUtente"])) {
+              if (strpos($_POST["codiceUtente"], ',') !== false) {
+                  $values = array_map('trim', explode(',', $_POST["codiceUtente"]));
+                  $placeholders = [];
+                  foreach ($values as $index => $value) {
+                      $placeholder = ":codiceUtente_$index";
+                      $placeholders[] = $placeholder;
+                      $params[$placeholder] = $value;
+                  }
+                  $query .= " AND codiceUtente IN (" . implode(',', $placeholders) . ")";
+              } else {
+                  $query .= " AND codiceUtente = :codiceUtente";
+                  $params[":codiceUtente"] = $_POST["codiceUtente"];
+              }
+          }
+          if (!empty($_POST["nome"])) {
+              if (strpos($_POST["nome"], ',') !== false) {
+                  $values = array_map('trim', explode(',', $_POST["nome"]));
+                  $placeholders = [];
+                  foreach ($values as $index => $value) {
+                      $placeholder = ":nome_$index";
+                      $placeholders[] = $placeholder;
+                      $params[$placeholder] = $value;
+                  }
+                  $query .= " AND nome IN (" . implode(',', $placeholders) . ")";
+              } else {
+                  $query .= " AND nome = :nome";
+                  $params[":nome"] = $_POST["nome"];
+              }
+          }
+          if (!empty($_POST["dataCreazione"])) {
+              if (strpos($_POST["dataCreazione"], ',') !== false) {
+                  $values = array_map('trim', explode(',', $_POST["dataCreazione"]));
+                  $placeholders = [];
+                  foreach ($values as $index => $value) {
+                      $placeholder = ":dataCreazione_$index";
+                      $placeholders[] = $placeholder;
+                      $params[$placeholder] = $value;
+                  }
+                  $query .= " AND dataCreazione IN (" . implode(',', $placeholders) . ")";
+              } else {
+                  $query .= " AND dataCreazione = :dataCreazione";
+                  $params[":dataCreazione"] = $_POST["dataCreazione"];
+              }
+          }
       }
       $query .= " ORDER BY codiceUtente";
 

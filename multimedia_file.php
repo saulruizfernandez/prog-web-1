@@ -29,9 +29,9 @@
       <div id="search_filter">
         <form method="POST" action="">
           Uploaded by:<input type="text" name="caricatoda"><br>
-          File number:<input type="number" name="numero"><br>
+          File number:<input type="text" name="numero"><br>
           Title:<input type="text" name="title"><br>
-          Dimension:<input type="number" name="dimension" step="0.01"><br>
+          Dimension:<input type="text" name="dimension" step="0.01"><br>
           URL:<input type="text" name="uurl"><br>
           File type:<br>
           <input type="radio" id="video" name="file_t" value="video">
@@ -54,32 +54,97 @@
       $error = false;
       $query = "SELECT * FROM FileMultimediale WHERE 1=1";
       $params = [];
-
       if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (!empty($_POST["caricatoda"])) {
-          $query .= " AND caricatoDa = :caricatoda"; // placeholder
-          $params[":caricatoda"] = $_POST["caricatoda"];
-        }
-        if (!empty($_POST["numero"])) {
-          $query .= " AND numero = :numero";
-          $params[":numero"] = $_POST["numero"];
-        }
-        if (!empty($_POST["title"])) {
-          $query .= " AND titolo = :title";
-          $params[":title"] = $_POST["title"];
-        }
-        if (!empty($_POST["dimension"])) {
-          $query .= " AND dimensione = :dimension";
-          $params[":dimension"] = $_POST["dimension"];
-        }
-        if (!empty($_POST["uurl"])) {
-          $query .= " AND `URL` = :uurl";
-          $params[":uurl"] = $_POST["uurl"];
-        }
-        if (!empty($_POST["file_t"])) {
-          $query .= " AND tipo = :file_t";
-          $params[":file_t"] = $_POST["file_t"];
-        }
+          if (!empty($_POST["caricatoda"])) {
+              if (strpos($_POST["caricatoda"], ',') !== false) {
+                  $values = array_map('trim', explode(',', $_POST["caricatoda"]));
+                  $placeholders = [];
+                  foreach ($values as $index => $value) {
+                      $placeholder = ":caricatoda_$index";
+                      $placeholders[] = $placeholder;
+                      $params[$placeholder] = $value;
+                  }
+                  $query .= " AND caricatoDa IN (" . implode(',', $placeholders) . ")";
+              } else {
+                  $query .= " AND caricatoDa = :caricatoda";
+                  $params[":caricatoda"] = $_POST["caricatoda"];
+              }
+          }
+          if (!empty($_POST["numero"])) {
+              if (strpos($_POST["numero"], ',') !== false) {
+                  $values = array_map('trim', explode(',', $_POST["numero"]));
+                  $placeholders = [];
+                  foreach ($values as $index => $value) {
+                      $placeholder = ":numero_$index";
+                      $placeholders[] = $placeholder;
+                      $params[$placeholder] = $value;
+                  }
+                  $query .= " AND numero IN (" . implode(',', $placeholders) . ")";
+              } else {
+                  $query .= " AND numero = :numero";
+                  $params[":numero"] = $_POST["numero"];
+              }
+          }
+          if (!empty($_POST["title"])) {
+              if (strpos($_POST["title"], ',') !== false) {
+                  $values = array_map('trim', explode(',', $_POST["title"]));
+                  $placeholders = [];
+                  foreach ($values as $index => $value) {
+                      $placeholder = ":title_$index";
+                      $placeholders[] = $placeholder;
+                      $params[$placeholder] = $value;
+                  }
+                  $query .= " AND titolo IN (" . implode(',', $placeholders) . ")";
+              } else {
+                  $query .= " AND titolo = :title";
+                  $params[":title"] = $_POST["title"];
+              }
+          }
+          if (!empty($_POST["dimension"])) {
+              if (strpos($_POST["dimension"], ',') !== false) {
+                  $values = array_map('trim', explode(',', $_POST["dimension"]));
+                  $placeholders = [];
+                  foreach ($values as $index => $value) {
+                      $placeholder = ":dimension_$index";
+                      $placeholders[] = $placeholder;
+                      $params[$placeholder] = $value;
+                  }
+                  $query .= " AND dimensione IN (" . implode(',', $placeholders) . ")";
+              } else {
+                  $query .= " AND dimensione = :dimension";
+                  $params[":dimension"] = $_POST["dimension"];
+              }
+          }
+          if (!empty($_POST["uurl"])) {
+              if (strpos($_POST["uurl"], ',') !== false) {
+                  $values = array_map('trim', explode(',', $_POST["uurl"]));
+                  $placeholders = [];
+                  foreach ($values as $index => $value) {
+                      $placeholder = ":uurl_$index";
+                      $placeholders[] = $placeholder;
+                      $params[$placeholder] = $value;
+                  }
+                  $query .= " AND `URL` IN (" . implode(',', $placeholders) . ")";
+              } else {
+                  $query .= " AND `URL` = :uurl";
+                  $params[":uurl"] = $_POST["uurl"];
+              }
+          }
+          if (!empty($_POST["file_t"])) {
+              if (strpos($_POST["file_t"], ',') !== false) {
+                  $values = array_map('trim', explode(',', $_POST["file_t"]));
+                  $placeholders = [];
+                  foreach ($values as $index => $value) {
+                      $placeholder = ":file_t_$index";
+                      $placeholders[] = $placeholder;
+                      $params[$placeholder] = $value;
+                  }
+                  $query .= " AND tipo IN (" . implode(',', $placeholders) . ")";
+              } else {
+                  $query .= " AND tipo = :file_t";
+                  $params[":file_t"] = $_POST["file_t"];
+              }
+          }
       }
       $query .= " ORDER BY numero";
 
