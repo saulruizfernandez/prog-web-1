@@ -69,28 +69,43 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
                   (
                     SELECT COUNT(*) 
                     FROM (
-                      SELECT DISTINCT b2.nome, b2.codiceUtente
-                      FROM Bacheca b2
-                      WHERE b2.codiceUtente = u.codice
-                        AND b2.nome IS NOT NULL 
-                        AND b2.codiceUtente IS NOT NULL
-                    ) AS dist_bachecas
+                      SELECT DISTINCT b.nome, b.codiceUtente
+                      FROM Bacheca b
+                      WHERE b.codiceUtente = u.codice
+                        AND b.nome IS NOT NULL 
+                        AND b.codiceUtente IS NOT NULL
+                    ) AS cero
                   ) AS bachecasCreadas,
                   (
                     SELECT COUNT(*) 
                     FROM (
-                      SELECT DISTINCT c2.nomeBacheca, c2.codUtente
-                      FROM UtenteAutorizzatoBacheca c2
-                      WHERE c2.utenteAutorizzato = u.codice
-                        AND c2.nomeBacheca IS NOT NULL 
-                        AND c2.codUtente IS NOT NULL
-                    ) AS dist_autorizzate
-                  ) AS bachecasAcceso
+                      SELECT DISTINCT c.nomeBacheca, c.codUtente
+                      FROM UtenteAutorizzatoBacheca c
+                      WHERE c.utenteAutorizzato = u.codice
+                        AND c.nomeBacheca IS NOT NULL 
+                        AND c.codUtente IS NOT NULL
+                    ) AS uno
+                  ) AS bachecasAcceso,
+                  (
+                    SELECT COUNT(*) 
+                    FROM (
+                      SELECT DISTINCT d.codice
+                      FROM Gruppo d
+                      WHERE d.creatoDa = u.codice
+                    ) AS dos
+                  ) AS gruposCreados,
+                  (
+                    SELECT COUNT(*) 
+                    FROM (
+                      SELECT DISTINCT e.codGruppo
+                      FROM UtenteAutorizzatoGruppo e
+                      WHERE e.codUtente = u.codice
+                    ) AS tres
+                  ) AS gruposAcceso
                 FROM Utente u
-                WHERE 1=1;
+                WHERE 1=1
                 ";
       $params = [];
-
       if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!empty($_POST["codice"])) {
           $query .= " AND u.codice = :codice"; // placeholder
@@ -136,8 +151,8 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
           <th>Birthday</th>
           <th style="word-wrap: break-word; white-space: normal; max-width: 150px;">Noticeboards that has created</th>
           <th style="word-wrap: break-word; white-space: normal; max-width: 150px;">Noticeboards to which it has access</th>
-          <!-- <th>Groups that has created</th>
-          <th>Groups to which it has access</th> -->
+          <th style="word-wrap: break-word; white-space: normal; max-width: 150px;">Groups that has created</th>
+          <th style="word-wrap: break-word; white-space: normal; max-width: 150px;">Groups to which it has access</th>
         </tr>
 
       <?php
@@ -158,6 +173,8 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
           <td id="<?php echo $row["codice"]; ?>_dataNascita"> <?php echo $row["dataNascita"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_bachecasCreadas"> <?php echo $row["bachecasCreadas"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_bachecasAcceso"> <?php echo $row["bachecasAcceso"]; ?></td>
+          <td id="<?php echo $row["codice"]; ?>_gruposCreados"> <?php echo $row["gruposCreados"]; ?></td>
+          <td id="<?php echo $row["codice"]; ?>_gruposAcceso"> <?php echo $row["gruposAcceso"]; ?></td>
           <td><button class="edit_button" id="<?php echo $row["codice"]; ?>_edit"><img src="media/icons/edit_icon.png" alt="edit_icon" style="width:30px; height:30px"></button></td>
           <td><button class="delete_button" id="<?php echo $row["codice"]; ?>_delete"><img src="media/icons/delete_icon.png" alt="delete_icon" style="width:30px; height:30px"></button></td>
         </tr>
