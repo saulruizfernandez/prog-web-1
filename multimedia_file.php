@@ -1,9 +1,25 @@
+<?php
+$codUtente = isset($_GET['codUtente']) ? $_GET['codUtente'] : '';
+$nomeBacheca = isset($_GET['nomeBacheca']) ? $_GET['nomeBacheca'] : '';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>arsanet 📡</title>
+  <script>
+    // Executes the search if the table is linked
+    window.onload = function() {
+        const searchFilter = "<?php echo $searchFilter; ?>";
+        if (searchFilter) {
+            $("#search_filter input[name=codice]").val(searchFilter);
+            window.history.replaceState({}, document.title, window.location.pathname);
+            $("#search_filter form").submit();
+        }
+    };
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/styles.css">
   <link rel="stylesheet" href="styles/title.css">
@@ -54,6 +70,27 @@
       $error = false;
       $query = "SELECT * FROM FileMultimediale WHERE 1=1";
       $params = [];
+      if (!empty($codUtente) && !empty($nomeBacheca)) {
+        // Primero obtenemos los numeroFile desde FilePubblicatoBacheca
+        $fileQuery = "SELECT F.file FROM FilePubblicatoBacheca F WHERE codUtente = :codUtente AND nomeBacheca = :nomeBacheca";
+        $stmtFiles = $conn->prepare($fileQuery);
+        $stmtFiles->execute([
+          ':codUtente' => $codUtente,
+          ':nomeBacheca' => $nomeBacheca
+        ]);
+        $fileNumbers = $stmtFiles->fetchAll(PDO::FETCH_COLUMN);
+      
+        if (!empty($fileNumbers)) {
+          // Creamos placeholders dinámicos
+          $placeholders = implode(',', array_fill(0, count($fileNumbers), '?'));
+          $query .= " AND numero IN ($placeholders)";
+          $params = array_merge($params, $fileNumbers);
+        } else {
+          // Si no hay archivos, forzamos una condición falsa para no mostrar nada
+          $query .= " AND 0 = 1";
+        }
+      }
+      
 
       if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!empty($_POST["caricatoda"])) {

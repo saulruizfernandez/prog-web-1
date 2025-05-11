@@ -193,3 +193,12 @@ $(function () {
     });
   });
 });
+
+$(function() {
+  $("#dataNascita").datepicker({
+    dateFormat: "dd/mm/yy", // dd/mm/yyyy en jQuery UI
+    changeMonth: true,
+    changeYear: true,
+    yearRange: "1900:2025"
+  });
+});
