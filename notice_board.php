@@ -43,7 +43,8 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
       </nav>
       <div id="search_filter">
         <form method="POST" action="">
-          User code:<input type="text" name="codiceUtente"><br>
+          <input type="text" name="codiceUtente" style="display: none"><br>
+          User Name:<input type="text" name="userName"><br>
           Notice Name:<input type="text" name="nome"><br>
           Creation Date: <input type="date" name="dataCreazione"><br>
           <input type="submit" value="search notice board">
@@ -58,7 +59,17 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
 
       <?php
       $error = false;
-      $query = "SELECT * FROM Bacheca WHERE 1=1";
+      $query = "SELECT 
+            B.codiceUtente, 
+            U.nome AS userName, 
+            B.nome, 
+            B.dataCreazione,
+            (SELECT COUNT(*) 
+             FROM FilePubblicatoBacheca F 
+             WHERE F.codUtente = B.codiceUtente AND F.nomeBacheca = B.nome) AS numFiles
+          FROM Bacheca B 
+          JOIN Utente U ON B.codiceUtente = U.codice
+          WHERE 1=1";
       $params = [];
       if ($_SERVER["REQUEST_METHOD"] == "POST") {
           if (!empty($_POST["codiceUtente"])) {
@@ -123,9 +134,11 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
 
       <table class="table">
         <tr class = "header">
-          <th>User Code</th>
+          <!--<th>User Code</th>-->
+          <th>User Name</th>
           <th>Notice Name</th>
           <th>Creation Date</th>
+          <th>Number of Files</th>
         </tr>
 
       <?php
@@ -139,13 +152,19 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
       ?>
 
         <tr <?php echo $classrow; ?>>
-          <td id="<?php echo $row["codiceUtente"]; ?>_codiceUtente">
+          <td id="<?php echo $row["codiceUtente"]; ?>_codiceUtente" style="display: none">
             <a href="index.php?search_filter=<?php echo urlencode($row['codiceUtente']); ?>"> 
-              <?php echo $row["codiceUtente"]; ?> 
+              <?php echo $row["codiceUtente"]; ?>
             </a>
           </td>
+          <td id="<?php echo $row["codiceUtente"]; ?>_userName"> <?php echo $row["userName"]; ?></td>
           <td id="<?php echo $row["codiceUtente"]; ?>_nome"> <?php echo $row["nome"]; ?></td>
           <td id="<?php echo $row["codiceUtente"]; ?>_dataCreazione"> <?php echo $row["dataCreazione"]; ?></td>
+          <td id="<?php echo $row["codiceUtente"]; ?>_numFiles">
+            <a href="multimedia_file.php?search_filter=<?php echo urlencode($row['codiceUtente']); ?>"> 
+              <?php echo $row["numFiles"]; ?>
+            </a>
+          </td>
           <td><button class="edit_button" id="<?php echo $row["codiceUtente"]; ?>_edit"><img src="media/icons/edit_icon.png" alt="edit_icon" style="width:30px; height:30px"></button></td>
           <td><button class="delete_button" id="<?php echo $row["codiceUtente"]; ?>_delete"><img src="media/icons/delete_icon.png" alt="delete_icon" style="width:30px; height:30px"></button></td>
         </tr>
@@ -167,14 +186,14 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
   </div>
   <div id="edit_dialog" title="Edit record" style="display: none;">
     <form action="" method="post">
-      User code: <input type="text" name="codiceUtente"><br>
+      <input type="text" name="codiceUtente" style="display: none"><br>
       Notice name: <input type="text" name="nome"><br>
       Creation Date: <input type="date" name="dataCreazione"><br>
     </form>
   </div>
   <div id="add_dialog" title="Add record" style="display: none;">
     <form action="" method="post">
-      User code: <input type="text" name="codiceUtente"><br>
+      <input type="text" name="codiceUtente" style="display: none"><br>
       Notice name: <input type="text" name="nome"><br>
       Creation Date: <input type="date" name="dataCreazione"><br>
     </form>
