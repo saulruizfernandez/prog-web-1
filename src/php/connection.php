@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
-$username = "root";
-$password = "";
+$username = "user";
+$password = "1234";
 $dbname = "my_arsahosting";
 
 try {

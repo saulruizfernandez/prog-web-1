@@ -224,16 +224,16 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
           <td id="<?php echo $row["codice"]; ?>_dataNascita"> <?php echo $row["dataNascita"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_bachecasCreadas">
             <a href="notice_board.php?search_filter=<?php echo urlencode($row["codice"]); ?>"> 
-              <?php echo $row["bachecasCreadas"]; ?> 
+                <?php echo $row["bachecasCreadas"]; ?> 
             </a>
           </td>
           <td id="<?php echo $row["codice"]; ?>_bachecasAcceso">
-          <a href="notice_board.php?search_filter=<?php echo urlencode($row["codice"]); ?>"> 
+            <a href="src/php/user-access/user_access.php?search_filter=<?php echo urlencode($row["codice"]); ?>"> 
               <?php echo $row["bachecasAcceso"]; ?> 
             </a>
           </td>
           <td id="<?php echo $row["codice"]; ?>_gruposCreados">
-          <a href="group.php?search_filter=<?php echo urlencode($row["codice"]); ?>"> 
+            <a href="group.php?search_filter=<?php echo urlencode($row["codice"]); ?>"> 
               <?php echo $row["gruposCreados"]; ?> 
             </a>
           </td>
