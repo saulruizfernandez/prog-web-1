@@ -237,7 +237,11 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
               <?php echo $row["gruposCreados"]; ?> 
             </a>
           </td>
-          <td id="<?php echo $row["codice"]; ?>_gruposAcceso"> <?php echo $row["gruposAcceso"]; ?></td>
+          <td id="<?php echo $row["codice"]; ?>_gruposAcceso">
+            <a href="src/php/user-access/user_access_g.php?search_filter=<?php echo urlencode($row["codice"]); ?>"> 
+              <?php echo $row["gruposAcceso"]; ?> 
+            </a>
+          </td>
           <td><button class="edit_button" id="<?php echo $row["codice"]; ?>_edit"><img src="media/icons/edit_icon.png" alt="edit_icon" style="width:30px; height:30px"></button></td>
           <td><button class="delete_button" id="<?php echo $row["codice"]; ?>_delete"><img src="media/icons/delete_icon.png" alt="delete_icon" style="width:30px; height:30px"></button></td>
         </tr>

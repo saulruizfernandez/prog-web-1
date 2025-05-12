@@ -1,5 +1,18 @@
 <?php
 $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
+$jsonData = isset($_GET['json_data']) ? $_GET['json_data'] : null;
+$decodedJson = null;
+
+if ($jsonData) {
+    $jsonData = urldecode($jsonData);
+    $decodedJson = json_decode($jsonData, true);
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        $decodedJson = null;
+        error_log("Error decoding JSON: " . json_last_error_msg());
+        echo "\nJSON Decoding Error: " . json_last_error_msg();
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -9,13 +22,27 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>arsanet 📡</title>
   <script>
-    // Executes the search if the table is linked
     window.onload = function() {
         const searchFilter = "<?php echo $searchFilter; ?>";
+        const jsonData = <?php echo $decodedJson ? json_encode($decodedJson) : 'null'; ?>;
+
         if (searchFilter) {
             $("#search_filter input[name=creatoDa]").val(searchFilter);
             window.history.replaceState({}, document.title, window.location.pathname);
             $("#search_filter form").submit();
+        } else if (jsonData) {
+            console.log("Received JSON data:", jsonData);
+            if (Array.isArray(jsonData)) {
+                console.log(jsonData[0].cod);
+                let codiceGruppoValues = [];
+                jsonData.forEach(function(item) {
+                  codiceGruppoValues.push(item.cod);
+                });
+                const codiceGruppoString = codiceGruppoValues.join(",");
+                $("#search_filter input[name=numero]").val(codiceGruppoString);
+                window.history.replaceState({}, document.title, window.location.pathname);
+                $("#search_filter form").submit();
+            }
         }
     };
   </script>

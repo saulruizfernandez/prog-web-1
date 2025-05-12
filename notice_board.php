@@ -7,13 +7,10 @@ if ($jsonData) {
     $jsonData = urldecode($jsonData);
     $decodedJson = json_decode($jsonData, true);
 
-    echo "Decoded JSON:\n";
-    print_r($decodedJson); // Use print_r to see the array structure
-
     if (json_last_error() !== JSON_ERROR_NONE) {
         $decodedJson = null;
         error_log("Error decoding JSON: " . json_last_error_msg());
-        echo "\nJSON Decoding Error: " . json_last_error_msg(); // Output the error message
+        echo "\nJSON Decoding Error: " . json_last_error_msg();
     }
 }
 ?>
@@ -25,26 +22,21 @@ if ($jsonData) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>arsanet 📡</title>
   <script>
-    // Executes the search if the table is linked
     window.onload = function() {
         const searchFilter = "<?php echo $searchFilter; ?>";
         const jsonData = <?php echo $decodedJson ? json_encode($decodedJson) : 'null'; ?>;
 
         if (searchFilter) {
-            // Caso 1: Procesar search_filter
             $("#search_filter input[name=codiceUtente]").val(searchFilter);
             window.history.replaceState({}, document.title, window.location.pathname);
             $("#search_filter form").submit();
         } else if (jsonData) {
-            // Caso 2: Procesar json_data
             console.log("Received JSON data:", jsonData);
-
             if (Array.isArray(jsonData)) {
                 console.log("hola");
                 let codiceUtenteValues = [];
                 let nomeValues = [];
 
-                // Iterar sobre cada par en el array
                 jsonData.forEach(pair => {
                     if (pair.cod && pair.nom) {
                         console.log(pair.cod + " ----- " + pair.nom);
@@ -52,22 +44,16 @@ if ($jsonData) {
                         nomeValues.push(pair.nom);
                     }
                 });
-
-                // Convertir los arrays en cadenas separadas por comas
                 const codiceUtenteString = codiceUtenteValues.join(",");
                 const nomeString = nomeValues.join(",");
-
-                // Asignar las cadenas a los inputs correspondientes
                 $("#search_filter input[name=codiceUtente]").val(codiceUtenteString);
                 $("#search_filter input[name=nome]").val(nomeString);
-
-                // Limpiar la URL y enviar el formulario
                 window.history.replaceState({}, document.title, window.location.pathname);
                 $("#search_filter form").submit();
             }
         }
     };
-</script>
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/styles.css">
   <link rel="stylesheet" href="styles/title.css">
