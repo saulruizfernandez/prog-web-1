@@ -1,6 +1,18 @@
 <?php
-$codUtente = isset($_GET['codUtente']) ? $_GET['codUtente'] : '';
-$nomeBacheca = isset($_GET['nomeBacheca']) ? $_GET['nomeBacheca'] : '';
+$searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
+$jsonData = isset($_GET['json_data']) ? $_GET['json_data'] : null;
+$decodedJson = null;
+
+if ($jsonData) {
+    $jsonData = urldecode($jsonData);
+    $decodedJson = json_decode($jsonData, true);
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        $decodedJson = null;
+        error_log("Error decoding JSON: " . json_last_error_msg());
+        echo "\nJSON Decoding Error: " . json_last_error_msg();
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -14,9 +26,35 @@ $nomeBacheca = isset($_GET['nomeBacheca']) ? $_GET['nomeBacheca'] : '';
     window.onload = function() {
         const searchFilter = "<?php echo $searchFilter; ?>";
         if (searchFilter) {
-            $("#search_filter input[name=codice]").val(searchFilter);
+            $("#search_filter input[name=numero]").val(searchFilter);
             window.history.replaceState({}, document.title, window.location.pathname);
             $("#search_filter form").submit();
+        }
+    };
+  </script>
+  <script>
+    window.onload = function() {
+        const searchFilter = "<?php echo $searchFilter; ?>";
+        const nomeBacheca = "<?php echo $nomeBacheca; ?>";
+        const jsonData = <?php echo $decodedJson ? json_encode($decodedJson) : 'null'; ?>;
+
+        if (searchFilter) {
+            $("#search_filter input[name=numero]").val(searchFilter);
+            window.history.replaceState({}, document.title, window.location.pathname);
+            $("#search_filter form").submit();
+        } else if (jsonData) {
+            console.log("Received JSON data:", jsonData);
+            if (Array.isArray(jsonData)) {
+                console.log(jsonData[0].cod);
+                let codiceFileValues = [];
+                jsonData.forEach(function(item) {
+                  codiceFileValues.push(item.cod);
+                });
+                const codiceFileString = codiceFileValues.join(",");
+                $("#search_filter input[name=numero]").val(codiceFileString);
+                window.history.replaceState({}, document.title, window.location.pathname);
+                $("#search_filter form").submit();
+            }
         }
     };
   </script>
