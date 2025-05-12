@@ -210,7 +210,7 @@ if ($jsonData) {
           <td id="<?php echo $row["codiceUtente"]; ?>_nome"> <?php echo $row["nome"]; ?></td>
           <td id="<?php echo $row["codiceUtente"]; ?>_dataCreazione"> <?php echo $row["dataCreazione"]; ?></td>
           <td id="<?php echo $row["codiceUtente"]; ?>_numFiles">
-            <a href="multimedia_file.php?search_filter=<?php echo urlencode($row['codiceUtente']); ?>"> 
+            <a href="src/php/file-bacheca/file_bacheca.php?search_filter=<?php echo urlencode($row['codiceUtente']); ?>"> 
               <?php echo $row["numFiles"]; ?>
             </a>
           </td>
