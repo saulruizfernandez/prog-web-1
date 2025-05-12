@@ -194,7 +194,7 @@ if ($jsonData) {
           </td>
           <td id="<?php echo $row["codiceUtente"]; ?>_userName"> <?php echo $row["userName"]; ?></td>
           <td id="<?php echo $row["codiceUtente"]; ?>_nome"> <?php echo $row["nome"]; ?></td>
-          <td id="<?php echo $row["codiceUtente"]; ?>_dataCreazione"> <?php echo $row["dataCreazione"]; ?></td>
+          <td id="<?php echo $row["codiceUtente"]; ?>_dataCreazione"> <?php echo date("d/m/Y", strtotime($row["dataCreazione"])); ?></td>
           <td id="<?php echo $row["codiceUtente"]; ?>_numFiles">
           <a href="src/php/file-bacheca/file_bacheca.php?codUtente=<?php echo urlencode($row['codiceUtente']); ?>&nome=<?php echo urlencode($row['nome']); ?>"> 
             <?php echo $row["numFiles"]; ?>

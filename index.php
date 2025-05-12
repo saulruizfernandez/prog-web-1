@@ -221,7 +221,7 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
           <td id="<?php echo $row["codice"]; ?>_nickname"> <?php echo $row["nickname"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_nome"> <?php echo $row["nome"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_cognome"> <?php echo $row["cognome"]; ?></td>
-          <td id="<?php echo $row["codice"]; ?>_dataNascita"> <?php echo $row["dataNascita"]; ?></td>
+          <td id="<?php echo $row["codice"]; ?>_dataNascita"> <?php echo date("d/m/Y", strtotime($row["dataNascita"])); ?></td>
           <td id="<?php echo $row["codice"]; ?>_bachecasCreadas">
             <a href="notice_board.php?search_filter=<?php echo urlencode($row["codice"]); ?>"> 
                 <?php echo $row["bachecasCreadas"]; ?> 
