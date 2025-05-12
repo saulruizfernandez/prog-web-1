@@ -26,7 +26,7 @@ if ($jsonData) {
     window.onload = function() {
         const searchFilter = "<?php echo $searchFilter; ?>";
         if (searchFilter) {
-            $("#search_filter input[name=codice]").val(searchFilter);
+            $("#search_filter input[name=numero]").val(searchFilter);
             window.history.replaceState({}, document.title, window.location.pathname);
             $("#search_filter form").submit();
         }

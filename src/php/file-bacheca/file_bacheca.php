@@ -1,15 +1,15 @@
 <?php
   include __DIR__ . '/../connection.php';
-  $rec_param = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
-  $nome_bacheca = isset($_GET['nome_bacheca']) ? $_GET['nome_bacheca'] : '';
-  $query2 = "SELECT F.file
-            FROM FilePubblicatoBacheca F
-            JOIN FileMultimediale M ON F.file = M.numero
-            WHERE F.codUtente = :codiceUtente AND F.nomeBacheca = :nome;";
+  $rec_param = isset($_GET['codUtente']) ? $_GET['codUtente'] : '';
+  $rec_param2 = isset($_GET['nome']) ? $_GET['nome'] : '';
+  $query2 = "SELECT P.file AS cod
+            FROM FilePubblicatoBacheca P
+            JOIN FileMultimediale F ON P.file = F.numero
+            WHERE P.codUtente = :codiceUtente AND P.nomeBacheca = :nome";
   try {
       $stmt2 = $conn->prepare($query2);
       $stmt2->bindParam(':codiceUtente', $rec_param, PDO::PARAM_INT);
-      $stmt2->bindParam(':nome', $nome_bacheca, PDO::PARAM_STR);
+      $stmt2->bindParam(':nome', $rec_param2, PDO::PARAM_STR);
       $stmt2->execute();
       $result2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);
       $serializedData = urlencode(json_encode($result2));
