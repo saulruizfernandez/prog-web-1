@@ -15,8 +15,6 @@ if ($jsonData) {
         error_log("Error decoding JSON: " . json_last_error_msg());
         echo "\nJSON Decoding Error: " . json_last_error_msg(); // Output the error message
     }
-} else {
-    echo "No json_data parameter found in the URL.";
 }
 ?>
 
@@ -61,7 +59,7 @@ if ($jsonData) {
 
                 // Asignar las cadenas a los inputs correspondientes
                 $("#search_filter input[name=codiceUtente]").val(codiceUtenteString);
-                $("#search_filter input[name=userName]").val(nomeString);
+                $("#search_filter input[name=nome]").val(nomeString);
 
                 // Limpiar la URL y enviar el formulario
                 window.history.replaceState({}, document.title, window.location.pathname);
@@ -108,7 +106,7 @@ if ($jsonData) {
     </div>
     <div id="content">
 
-      <?php
+    <?php
       $error = false;
       $query = "SELECT 
             B.codiceUtente, 
@@ -116,8 +114,8 @@ if ($jsonData) {
             B.nome, 
             B.dataCreazione,
             (SELECT COUNT(*) 
-             FROM FilePubblicatoBacheca F 
-             WHERE F.codUtente = B.codiceUtente AND F.nomeBacheca = B.nome) AS numFiles
+            FROM FilePubblicatoBacheca F 
+            WHERE F.codUtente = B.codiceUtente AND F.nomeBacheca = B.nome) AS numFiles
           FROM Bacheca B 
           JOIN Utente U ON B.codiceUtente = U.codice
           WHERE 1=1";
@@ -132,9 +130,9 @@ if ($jsonData) {
                       $placeholders[] = $placeholder;
                       $params[$placeholder] = $value;
                   }
-                  $query .= " AND codiceUtente IN (" . implode(',', $placeholders) . ")";
+                  $query .= " AND B.codiceUtente IN (" . implode(',', $placeholders) . ")";
               } else {
-                  $query .= " AND codiceUtente = :codiceUtente";
+                  $query .= " AND B.codiceUtente = :codiceUtente";
                   $params[":codiceUtente"] = $_POST["codiceUtente"];
               }
           }
@@ -147,9 +145,9 @@ if ($jsonData) {
                       $placeholders[] = $placeholder;
                       $params[$placeholder] = $value;
                   }
-                  $query .= " AND nome IN (" . implode(',', $placeholders) . ")";
+                  $query .= " AND B.nome IN (" . implode(',', $placeholders) . ")";
               } else {
-                  $query .= " AND nome = :nome";
+                  $query .= " AND B.nome = :nome";
                   $params[":nome"] = $_POST["nome"];
               }
           }
@@ -162,14 +160,14 @@ if ($jsonData) {
                       $placeholders[] = $placeholder;
                       $params[$placeholder] = $value;
                   }
-                  $query .= " AND dataCreazione IN (" . implode(',', $placeholders) . ")";
+                  $query .= " AND B.dataCreazione IN (" . implode(',', $placeholders) . ")";
               } else {
-                  $query .= " AND dataCreazione = :dataCreazione";
+                  $query .= " AND B.dataCreazione = :dataCreazione";
                   $params[":dataCreazione"] = $_POST["dataCreazione"];
               }
           }
       }
-      $query .= " ORDER BY codiceUtente";
+      $query .= " ORDER BY B.codiceUtente";
 
       try {
         $aux = $conn->prepare($query);
@@ -185,7 +183,7 @@ if ($jsonData) {
 
       <table class="table">
         <tr class = "header">
-          <!--<th>User Code</th>-->
+          <th>User Code</th>
           <th>User Name</th>
           <th>Notice Name</th>
           <th>Creation Date</th>
@@ -203,7 +201,7 @@ if ($jsonData) {
       ?>
 
         <tr <?php echo $classrow; ?>>
-          <td id="<?php echo $row["codiceUtente"]; ?>_codiceUtente" style="display: none">
+          <td id="<?php echo $row["codiceUtente"]; ?>_codiceUtente">
             <a href="index.php?search_filter=<?php echo urlencode($row['codiceUtente']); ?>"> 
               <?php echo $row["codiceUtente"]; ?>
             </a>
