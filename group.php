@@ -86,7 +86,16 @@ if ($jsonData) {
 
       <?php
       $error = false;
-      $query = "SELECT * FROM Gruppo WHERE 1=1";
+      $query = "SELECT
+                  G.creatoDa,
+                  G.codice,
+                  G.nome,
+                  G.dataCreazione,
+                  count(A.file) AS filesAssoc
+                FROM Gruppo G
+                JOIN FileAssociatoGruppo A
+                ON G.codice = A.codGruppo
+                WHERE 1=1";
       $params = [];
       if ($_SERVER["REQUEST_METHOD"] == "POST") {
           if (!empty($_POST["creatoDa"])) {
@@ -150,7 +159,8 @@ if ($jsonData) {
               }
           }
       }
-      $query .= " ORDER BY codice";
+      $query .= " GROUP BY G.creatoDa, G.codice, G.nome, G.dataCreazione";
+      $query .= " ORDER BY G.codice";
 
       try {
         $aux = $conn->prepare($query);
@@ -170,6 +180,7 @@ if ($jsonData) {
           <th>Code</th>
           <th>Name</th>
           <th>Date creation</th>
+          <th>Files associated to group</th>
         </tr>
 
       <?php
@@ -191,6 +202,11 @@ if ($jsonData) {
           <td id="<?php echo $row["codice"]; ?>_codice"> <?php echo $row["codice"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_nome"> <?php echo $row["nome"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_dataCreazione"> <?php echo $row["dataCreazione"]; ?></td>
+          <td id="<?php echo $row["codice"]; ?>_filesAssoc">
+            <a href="src/php/group-files/group_files.php?search_filter=<?php echo urlencode($row["codice"]); ?>"> 
+              <?php echo $row["filesAssoc"]; ?>
+            </a>
+          </td>
           <td><button class="edit_button" id="<?php echo $row["codice"]; ?>_edit"><img src="media/icons/edit_icon.png" alt="edit_icon" style="width:30px; height:30px"></button></td>
           <td><button class="delete_button" id="<?php echo $row["codice"]; ?>_delete"><img src="media/icons/delete_icon.png" alt="delete_icon" style="width:30px; height:30px"></button></td>
         </tr>
