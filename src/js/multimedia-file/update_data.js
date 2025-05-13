@@ -1,23 +1,22 @@
 $(function () {
   function validateForm(data) {
-    const errors = [];
-
-    if (!/^[a-zA-Z0-9]*$/.test(data.titolo)) {
-      errors.push("Title can only have letters and numbers");
-    }
-    if (!/^([0-9]*\.[0-9]*)?$/.test(data.dimensione)) {
-      errors.push("The dimension can only be a decimal number");
-    }
-    if (
-      !/^((https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*)?)?$/.test(
-        data.uurl
-      )
-    ) {
-      errors.push("The URL you inserted is not valid");
-    }
-
-    return errors;
+  const errors = [];
+  if (!/^[a-zA-Z0-9\s.]*$/.test(data.titolo)) {
+    errors.push("Title can only have letters, numbers, spaces, and periods");
   }
+  if (!/^([0-9]*\.[0-9]*)?$/.test(data.dimensione)) {
+    errors.push("The dimension can only be a decimal number");
+  }
+  if (
+    !    /^https?:\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/.test(
+      data.uurl
+    )
+  ) {
+    errors.push("The URL you inserted is not valid");
+  }
+  // console.log("Found errors:", errors);
+  return errors;
+}
 
   function fill_form_values(record_to_update) {
     $("#edit_dialog form input").each(function () {
@@ -38,8 +37,16 @@ $(function () {
           )
         );
       } else if ($(this).attr("name") === "uurl") {
-        $(this).val($("#" + record_to_update.toString() + "_url").text());
+        const elementId = record_to_update + "_url";
+        const value = $("#" + elementId).text().trim();
+      
+        if (value) {
+          $(this).val(value);
+        } else {
+          console.warn(`Valor vacío o elemento con ID "${elementId}" no encontrado.`);
+        }
       }
+      
     });
     $("#filetypeselect").val(
       $("#" + record_to_update.toString() + "_filetype")
