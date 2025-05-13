@@ -177,7 +177,7 @@ if ($jsonData) {
       <table class="table">
         <tr class = "header">
           <th>Created by</th>
-          <th>Code</th>
+          <th style="display: none;">Code</th>
           <th>Name</th>
           <th>Date creation</th>
           <th>Files associated to group</th>
@@ -196,10 +196,24 @@ if ($jsonData) {
         <tr <?php echo $classrow; ?>>
           <td id="<?php echo $row["codice"]; ?>_createdby">
             <a href="index.php?search_filter=<?php echo urlencode($row['creatoDa']); ?>"> 
-              <?php echo $row["creatoDa"]; ?>
+              <?php
+                $query3 = "SELECT U.nome AS nom
+                FROM Utente U
+                WHERE U.codice = :codice
+                LIMIT 1;";
+                try {
+                    $stmt3 = $conn->prepare($query3);
+                    $stmt3->bindParam(':codice', $row['creatoDa'], PDO::PARAM_INT);
+                    $stmt3->execute();
+                    $result3 = $stmt3->fetchAll(PDO::FETCH_ASSOC);
+                } catch (PDOException $e) {
+                    echo "Error en la consulta: " . $e->getMessage();
+                }
+                echo $result3[0]['nom'];
+                ?> 
             </a>
           </td>
-          <td id="<?php echo $row["codice"]; ?>_codice"> <?php echo $row["codice"]; ?></td>
+          <td id="<?php echo $row["codice"]; ?>_codice" style="display: none;"> <?php echo $row["codice"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_nome"> <?php echo $row["nome"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_dataCreazione"> <?php echo $row["dataCreazione"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_filesAssoc">

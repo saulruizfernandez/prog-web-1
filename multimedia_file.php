@@ -217,7 +217,7 @@ if ($jsonData) {
       <table class="table">
         <tr class = "header">
           <th>Uploaded by</th>
-          <th>File number</th>
+          <th style="display: none;">File number</th>
           <th>Title</th>
           <th>Dimension</th>
           <th>URL</th>
@@ -237,10 +237,24 @@ if ($jsonData) {
         <tr <?php echo $classrow; ?>>
           <td id="<?php echo $row["numero"]; ?>_uploadedby">
             <a href="index.php?search_filter=<?php echo urlencode($row['caricatoDa']); ?>"> 
-              <?php echo $row["caricatoDa"]; ?> 
+              <?php
+                $query3 = "SELECT U.nome AS nom
+                FROM Utente U
+                WHERE U.codice = :codice
+                LIMIT 1;";
+                try {
+                    $stmt3 = $conn->prepare($query3);
+                    $stmt3->bindParam(':codice', $row['caricatoDa'], PDO::PARAM_INT);
+                    $stmt3->execute();
+                    $result3 = $stmt3->fetchAll(PDO::FETCH_ASSOC);
+                } catch (PDOException $e) {
+                    echo "Error en la consulta: " . $e->getMessage();
+                }
+                echo $result3[0]['nom'];
+              ?> 
             </a>
           </td>
-          <td id="<?php echo $row["numero"]; ?>_number"> <?php echo $row["numero"]; ?></td>
+          <td id="<?php echo $row["numero"]; ?>_number" style="display: none;"> <?php echo $row["numero"]; ?></td>
           <td id="<?php echo $row["numero"]; ?>_title"> <?php echo $row["titolo"]; ?></td>
           <td id="<?php echo $row["numero"]; ?>_dimension"> <?php echo $row["dimensione"]; ?></td>
           <td id="<?php echo $row["numero"]; ?>_url"> <?php echo $row["URL"]; ?></td>

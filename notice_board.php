@@ -184,7 +184,7 @@ if ($jsonData) {
 
       <table class="table">
         <tr class = "header">
-          <th>User Code</th>
+          <th style="display: none;">User Code</th>
           <th>User Name</th>
           <th>Notice Name</th>
           <th>Creation Date</th>
@@ -202,12 +202,14 @@ if ($jsonData) {
       ?>
 
         <tr <?php echo $classrow; ?>>
-          <td id="<?php echo $row["codiceUtente"]; ?>_codiceUtente">
+          <td id="<?php echo $row["codiceUtente"]; ?>_codiceUtente" style="display: none;">
+            <?php echo $row["codiceUtente"]; ?>
+          </td>
+          <td id="<?php echo $row["codiceUtente"]; ?>_userName">
             <a href="index.php?search_filter=<?php echo urlencode($row['codiceUtente']); ?>"> 
-              <?php echo $row["codiceUtente"]; ?>
+              <?php echo $row["userName"]; ?>
             </a>
           </td>
-          <td id="<?php echo $row["codiceUtente"]; ?>_userName"> <?php echo $row["userName"]; ?></td>
           <td id="<?php echo $row["codiceUtente"]; ?>_nome"> <?php echo $row["nome"]; ?></td>
           <td id="<?php echo $row["codiceUtente"]; ?>_dataCreazione"> <?php echo $row["dataCreazione"]; ?></td>
           <td id="<?php echo $row["codiceUtente"]; ?>_numFiles">
