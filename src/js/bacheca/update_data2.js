@@ -33,6 +33,10 @@ $(function () {
 
   $(".delete_button").on("click", function () {
     const record_to_delete = $(this).attr("id").replace(/\D/g, "");
+    const nome = $("#" + record_to_delete + "_nome").text().trim();
+
+    console.log("ID to delete:", record_to_delete);
+    console.log("Nome to delete:", nome);
     $("#delete_dialog").dialog({
       resizable: false,
       show: {
@@ -52,7 +56,7 @@ $(function () {
             "src/php/bacheca/delete_data.php",
             {
               id: record_to_delete,
-              nome: $(this).find('input[name="nome"]').val(),
+              nome: nome,
             },
             function (response) {
               if (response && !response.success) {
@@ -60,7 +64,7 @@ $(function () {
                 $("#error_log_message").text(response.error);
               } else {
                 // Force table reload after deletion
-                $("#search_add_filter form").submit();
+                $("#search_filter form").submit();
               }
             }
           );

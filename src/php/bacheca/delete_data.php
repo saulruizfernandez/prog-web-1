@@ -9,9 +9,17 @@ if (!$conn) {
 }
 
 // Validate input
+
 if (!isset($_POST['id']) || !is_numeric($_POST['id']) || !isset($_POST['nome']) || trim($_POST['nome']) === '') {
     http_response_code(400); // Bad Request
-    echo json_encode(['success' => false, 'error' => 'Invalid input data']);
+    echo json_encode([
+        'success' => false,
+        'error' => 'Invalid input data',
+        'details' => [
+            'id' => $_POST['id'] ?? null,
+            'nome' => $_POST['nome'] ?? null,
+        ],
+    ]);
     exit;
 }
 
