@@ -61,124 +61,124 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
       <?php
       $error = false;
       $query = "SELECT 
-                  U.codice, 
-                  U.nickname, 
-                  U.nome, 
-                  U.cognome, 
-                  U.dataNascita, 
-                  (
-                    SELECT COUNT(*) 
-                    FROM (
-                      SELECT DISTINCT b.nome, b.codiceUtente
-                      FROM Bacheca b
-                      WHERE b.codiceUtente = U.codice
-                    ) AS cero
-                  ) AS bachecasCreadas,
-                  (
-                    SELECT COUNT(*) 
-                    FROM (
-                      SELECT DISTINCT c.nomeBacheca, c.codUtente
-                      FROM UtenteAutorizzatoBacheca c
-                      WHERE c.utenteAutorizzato = U.codice
-                    ) AS uno
-                  ) AS bachecasAcceso,
-                  (
-                    SELECT COUNT(*) 
-                    FROM (
-                      SELECT DISTINCT d.codice
-                      FROM Gruppo d
-                      WHERE d.creatoDa = U.codice
-                    ) AS dos
-                  ) AS gruposCreados,
-                  (
-                    SELECT COUNT(*) 
-                    FROM (
-                      SELECT DISTINCT e.codGruppo
-                      FROM UtenteAutorizzatoGruppo e
-                      WHERE e.codUtente = U.codice
-                    ) AS tres
-                  ) AS gruposAcceso
-                FROM Utente U
-                WHERE 1=1";
-      $params = [];
-      if ($_SERVER["REQUEST_METHOD"] == "POST") {
-          if (!empty($_POST["codice"])) {
+                U.codice, 
+                U.nickname, 
+                U.nome, 
+                U.cognome, 
+                U.dataNascita, 
+                (
+                SELECT COUNT(*) 
+                FROM (
+                  SELECT DISTINCT b.nome, b.codiceUtente
+                  FROM Bacheca b
+                  WHERE b.codiceUtente = U.codice
+                ) AS cero
+                ) AS bachecasCreadas,
+                (
+                SELECT COUNT(*) 
+                FROM (
+                  SELECT DISTINCT c.nomeBacheca, c.codUtente
+                  FROM UtenteAutorizzatoBacheca c
+                  WHERE c.utenteAutorizzato = U.codice
+                ) AS uno
+                ) AS bachecasAcceso,
+                (
+                SELECT COUNT(*) 
+                FROM (
+                  SELECT DISTINCT d.codice
+                  FROM Gruppo d
+                  WHERE d.creatoDa = U.codice
+                ) AS dos
+                ) AS gruposCreados,
+                (
+                SELECT COUNT(*) 
+                FROM (
+                  SELECT DISTINCT e.codGruppo
+                  FROM UtenteAutorizzatoGruppo e
+                  WHERE e.codUtente = U.codice
+                ) AS tres
+                ) AS gruposAcceso
+              FROM Utente U
+              WHERE 1=1";
+          $params = [];
+          if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (!empty($_POST["codice"])) {
               if (strpos($_POST["codice"], ',') !== false) {
-                  $values = array_map('trim', explode(',', $_POST["codice"]));
-                  $placeholders = [];
-                  foreach ($values as $index => $value) {
-                      $placeholder = ":codice_$index";
-                      $placeholders[] = $placeholder;
-                      $params[$placeholder] = $value;
-                  }
-                  $query .= " AND U.codice IN (" . implode(',', $placeholders) . ")";
+                $values = array_map('trim', explode(',', $_POST["codice"]));
+                $placeholders = [];
+                foreach ($values as $index => $value) {
+                  $placeholder = ":codice_$index";
+                  $placeholders[] = $placeholder;
+                  $params[$placeholder] = $value;
+                }
+                $query .= " AND U.codice IN (" . implode(',', $placeholders) . ")";
               } else {
-                  $query .= " AND U.codice = :codice";
-                  $params[":codice"] = $_POST["codice"];
+                $query .= " AND U.codice = :codice";
+                $params[":codice"] = $_POST["codice"];
               }
-          }
-          if (!empty($_POST["nickname"])) {
+            }
+            if (!empty($_POST["nickname"])) {
               if (strpos($_POST["nickname"], ',') !== false) {
-                  $values = array_map('trim', explode(',', $_POST["nickname"]));
-                  $placeholders = [];
-                  foreach ($values as $index => $value) {
-                      $placeholder = ":nickname_$index";
-                      $placeholders[] = $placeholder;
-                      $params[$placeholder] = $value;
-                  }
-                  $query .= " AND U.nickname IN (" . implode(',', $placeholders) . ")";
+                $values = array_map('trim', explode(',', $_POST["nickname"]));
+                $placeholders = [];
+                foreach ($values as $index => $value) {
+                  $placeholder = ":nickname_$index";
+                  $placeholders[] = $placeholder;
+                  $params[$placeholder] = "%$value%";
+                }
+                $query .= " AND (" . implode(' OR ', array_map(fn($p) => "U.nickname LIKE $p", $placeholders)) . ")";
               } else {
-                  $query .= " AND U.nickname = :nickname";
-                  $params[":nickname"] = $_POST["nickname"];
+                $query .= " AND U.nickname LIKE :nickname";
+                $params[":nickname"] = "%" . $_POST["nickname"] . "%";
               }
-          }
-          if (!empty($_POST["nome"])) {
+            }
+            if (!empty($_POST["nome"])) {
               if (strpos($_POST["nome"], ',') !== false) {
-                  $values = array_map('trim', explode(',', $_POST["nome"]));
-                  $placeholders = [];
-                  foreach ($values as $index => $value) {
-                      $placeholder = ":nome_$index";
-                      $placeholders[] = $placeholder;
-                      $params[$placeholder] = $value;
-                  }
-                  $query .= " AND U.nome IN (" . implode(',', $placeholders) . ")";
+                $values = array_map('trim', explode(',', $_POST["nome"]));
+                $placeholders = [];
+                foreach ($values as $index => $value) {
+                  $placeholder = ":nome_$index";
+                  $placeholders[] = $placeholder;
+                  $params[$placeholder] = "%$value%";
+                }
+                $query .= " AND (" . implode(' OR ', array_map(fn($p) => "U.nome LIKE $p", $placeholders)) . ")";
               } else {
-                  $query .= " AND U.nome = :nome";
-                  $params[":nome"] = $_POST["nome"];
+                $query .= " AND U.nome LIKE :nome";
+                $params[":nome"] = "%" . $_POST["nome"] . "%";
               }
-          }
-          if (!empty($_POST["cognome"])) {
+            }
+            if (!empty($_POST["cognome"])) {
               if (strpos($_POST["cognome"], ',') !== false) {
-                  $values = array_map('trim', explode(',', $_POST["cognome"]));
-                  $placeholders = [];
-                  foreach ($values as $index => $value) {
-                      $placeholder = ":cognome_$index";
-                      $placeholders[] = $placeholder;
-                      $params[$placeholder] = $value;
-                  }
-                  $query .= " AND U.cognome IN (" . implode(',', $placeholders) . ")";
+                $values = array_map('trim', explode(',', $_POST["cognome"]));
+                $placeholders = [];
+                foreach ($values as $index => $value) {
+                  $placeholder = ":cognome_$index";
+                  $placeholders[] = $placeholder;
+                  $params[$placeholder] = "%$value%";
+                }
+                $query .= " AND (" . implode(' OR ', array_map(fn($p) => "U.cognome LIKE $p", $placeholders)) . ")";
               } else {
-                  $query .= " AND U.cognome = :cognome";
-                  $params[":cognome"] = $_POST["cognome"];
+                $query .= " AND U.cognome LIKE :cognome";
+                $params[":cognome"] = "%" . $_POST["cognome"] . "%";
               }
-          }
-          if (!empty($_POST["dataNascita"])) {
+            }
+            if (!empty($_POST["dataNascita"])) {
               if (strpos($_POST["dataNascita"], ',') !== false) {
-                  $values = array_map('trim', explode(',', $_POST["dataNascita"]));
-                  $placeholders = [];
-                  foreach ($values as $index => $value) {
-                      $placeholder = ":dataNascita_$index";
-                      $placeholders[] = $placeholder;
-                      $params[$placeholder] = $value;
-                  }
-                  $query .= " AND U.dataNascita IN (" . implode(',', $placeholders) . ")";
+                $values = array_map('trim', explode(',', $_POST["dataNascita"]));
+                $placeholders = [];
+                foreach ($values as $index => $value) {
+                  $placeholder = ":dataNascita_$index";
+                  $placeholders[] = $placeholder;
+                  $params[$placeholder] = $value;
+                }
+                $query .= " AND U.dataNascita IN (" . implode(',', $placeholders) . ")";
               } else {
-                  $query .= " AND U.dataNascita = :dataNascita";
-                  $params[":dataNascita"] = $_POST["dataNascita"];
+                $query .= " AND U.dataNascita = :dataNascita";
+                $params[":dataNascita"] = $_POST["dataNascita"];
               }
+            }
           }
-      }
-      $query .= " GROUP BY U.codice, U.nickname, U.nome, U.cognome, U.dataNascita";
+          $query .= " GROUP BY U.codice, U.nickname, U.nome, U.cognome, U.dataNascita";
 
 
       try {

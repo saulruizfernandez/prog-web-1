@@ -78,7 +78,7 @@ if ($jsonData) {
       </nav>
       <div id="search_filter">
         <form method="POST" action="">
-          <input type="text" name="codiceUtente" style="display: none"><br>
+          <input type="text" name="codiceUtente" style="display: none">
           User Name:<input type="text" name="userName"><br>
           Notice Name:<input type="text" name="nome"><br>
           Creation Date: <input type="date" name="dataCreazione"><br>
@@ -102,58 +102,73 @@ if ($jsonData) {
             (SELECT COUNT(*) 
             FROM FilePubblicatoBacheca F 
             WHERE F.codUtente = B.codiceUtente AND F.nomeBacheca = B.nome) AS numFiles
-          FROM Bacheca B 
-          JOIN Utente U ON B.codiceUtente = U.codice
-          WHERE 1=1";
-      $params = [];
-      if ($_SERVER["REQUEST_METHOD"] == "POST") {
-          if (!empty($_POST["codiceUtente"])) {
+            FROM Bacheca B 
+            JOIN Utente U ON B.codiceUtente = U.codice
+            WHERE 1=1";
+          $params = [];
+          if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (!empty($_POST["codiceUtente"])) {
               if (strpos($_POST["codiceUtente"], ',') !== false) {
-                  $values = array_map('trim', explode(',', $_POST["codiceUtente"]));
-                  $placeholders = [];
-                  foreach ($values as $index => $value) {
-                      $placeholder = ":codiceUtente_$index";
-                      $placeholders[] = $placeholder;
-                      $params[$placeholder] = $value;
-                  }
-                  $query .= " AND B.codiceUtente IN (" . implode(',', $placeholders) . ")";
+                $values = array_map('trim', explode(',', $_POST["codiceUtente"]));
+                $placeholders = [];
+                foreach ($values as $index => $value) {
+                  $placeholder = ":codiceUtente_$index";
+                  $placeholders[] = $placeholder;
+                  $params[$placeholder] = $value;
+                }
+                $query .= " AND B.codiceUtente IN (" . implode(',', $placeholders) . ")";
               } else {
-                  $query .= " AND B.codiceUtente = :codiceUtente";
-                  $params[":codiceUtente"] = $_POST["codiceUtente"];
+                $query .= " AND B.codiceUtente = :codiceUtente";
+                $params[":codiceUtente"] = $_POST["codiceUtente"];
               }
-          }
-          if (!empty($_POST["nome"])) {
+            }
+            if (!empty($_POST["userName"])) {
+              if (strpos($_POST["userName"], ',') !== false) {
+                $values = array_map('trim', explode(',', $_POST["userName"]));
+                $placeholders = [];
+                foreach ($values as $index => $value) {
+                  $placeholder = ":userName_$index";
+                  $placeholders[] = $placeholder;
+                  $params[$placeholder] = "%$value%";
+                }
+                $query .= " AND (" . implode(' OR ', array_map(fn($p) => "U.nome LIKE $p", $placeholders)) . ")";
+              } else {
+                $query .= " AND U.nome LIKE :userName";
+                $params[":userName"] = "%" . $_POST["userName"] . "%";
+              }
+            }
+            if (!empty($_POST["nome"])) {
               if (strpos($_POST["nome"], ',') !== false) {
-                  $values = array_map('trim', explode(',', $_POST["nome"]));
-                  $placeholders = [];
-                  foreach ($values as $index => $value) {
-                      $placeholder = ":nome_$index";
-                      $placeholders[] = $placeholder;
-                      $params[$placeholder] = $value;
-                  }
-                  $query .= " AND B.nome IN (" . implode(',', $placeholders) . ")";
+                $values = array_map('trim', explode(',', $_POST["nome"]));
+                $placeholders = [];
+                foreach ($values as $index => $value) {
+                  $placeholder = ":nome_$index";
+                  $placeholders[] = $placeholder;
+                  $params[$placeholder] = $value;
+                }
+                $query .= " AND B.nome IN (" . implode(',', $placeholders) . ")";
               } else {
-                  $query .= " AND B.nome = :nome";
-                  $params[":nome"] = $_POST["nome"];
+                $query .= " AND B.nome = :nome";
+                $params[":nome"] = $_POST["nome"];
               }
-          }
-          if (!empty($_POST["dataCreazione"])) {
+            }
+            if (!empty($_POST["dataCreazione"])) {
               if (strpos($_POST["dataCreazione"], ',') !== false) {
-                  $values = array_map('trim', explode(',', $_POST["dataCreazione"]));
-                  $placeholders = [];
-                  foreach ($values as $index => $value) {
-                      $placeholder = ":dataCreazione_$index";
-                      $placeholders[] = $placeholder;
-                      $params[$placeholder] = $value;
-                  }
-                  $query .= " AND B.dataCreazione IN (" . implode(',', $placeholders) . ")";
+                $values = array_map('trim', explode(',', $_POST["dataCreazione"]));
+                $placeholders = [];
+                foreach ($values as $index => $value) {
+                  $placeholder = ":dataCreazione_$index";
+                  $placeholders[] = $placeholder;
+                  $params[$placeholder] = $value;
+                }
+                $query .= " AND B.dataCreazione IN (" . implode(',', $placeholders) . ")";
               } else {
-                  $query .= " AND B.dataCreazione = :dataCreazione";
-                  $params[":dataCreazione"] = $_POST["dataCreazione"];
+                $query .= " AND B.dataCreazione = :dataCreazione";
+                $params[":dataCreazione"] = $_POST["dataCreazione"];
               }
+            }
           }
-      }
-      $query .= " ORDER BY B.codiceUtente";
+          $query .= " ORDER BY B.codiceUtente";
 
       try {
         $aux = $conn->prepare($query);
