@@ -3,7 +3,7 @@ $(function () {
     const errors = [];
 
     if (!/^[a-zA-Z0-9]*$/.test(data.titolo)) {
-      errors.push("Titolo can only have letters and numbers");
+      errors.push("Title can only have letters and numbers");
     }
     if (!/^([0-9]*\.[0-9]*)?$/.test(data.dimensione)) {
       errors.push("The dimension can only be a decimal number");

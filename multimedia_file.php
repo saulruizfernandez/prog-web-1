@@ -266,7 +266,7 @@ if ($jsonData) {
   </div>
   <div id="edit_dialog" title="Edit record" style="display: none;">
     <form action="" method="post">
-      Uploaded by: <input type="text" name="uploadedby"><br>
+      Uploaded by: <input type="text" name="uploadedby" readonly><br>
       File number: <input type="number " name="number" readonly><br>
       Title: <input type="text" name="title"><br>
       Dimension: <input type="number" step="0.01" name="dimension"><br>
