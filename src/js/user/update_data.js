@@ -2,7 +2,7 @@ $(function () {
   function validateForm(data) {
     const errors = [];
 
-    if (!/^[a-zA-Z0-9]*$/.test(data.nickname)) {
+    if (!/^[a-zA-Z0-9\s]*$/.test(data.nickname)) {
       errors.push("Nickname can only have letters and numbers");
     }
     if (!/^[a-zA-Z\s]*$/.test(data.nome)) {
@@ -194,11 +194,11 @@ $(function () {
   });
 });
 
-$(function() {
+$(function () {
   $("#dataNascita").datepicker({
     dateFormat: "dd/mm/yy", // dd/mm/yyyy en jQuery UI
     changeMonth: true,
     changeYear: true,
-    yearRange: "1900:2025"
+    yearRange: "1900:2025",
   });
 });

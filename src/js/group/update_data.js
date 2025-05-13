@@ -1,8 +1,8 @@
 $(function () {
   function validateForm(data) {
     const errors = [];
-    if (!/^[a-zA-Z0-9]*$/.test(data.nome)) {
-      errors.push("Name can only have letters and numbers");
+    if (!/^[a-zA-Z0-9/,-\s]*$/.test(data.nome)) {
+      errors.push("Name entered is incorrect");
     }
     return errors;
   }
@@ -11,7 +11,7 @@ $(function () {
     $("#edit_dialog form input").each(function () {
       if ($(this).attr("name") === "createdby") {
         $(this).val(
-          $("#" + record_to_update.toString() + "_createdby")
+          $("#" + record_to_update.toString() + "_createdByCode")
             .text()
             .trim()
         );

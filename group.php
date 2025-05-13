@@ -48,7 +48,6 @@ if ($jsonData) {
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/styles.css">
-  <link rel="stylesheet" href="styles/title.css">
   <script src="lib/jquery-3.7.1.min.js"></script>
   <script src="lib/jquery-ui-1.14.1.custom/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="lib/jquery-ui-1.14.1.custom/jquery-ui.min.css">
@@ -70,10 +69,10 @@ if ($jsonData) {
       </nav>
       <div id="search_filter">
         <form method="POST" action="">
-          CreatedBy:<input type="text" name="creatoDa"><br>
-          Code:<input type="text" name="numero"><br>
+          <input type="text" name="creatoDa" style="display: none;">
+          <input type="text" name="numero" style="display: none;">
           Name:<input type="text" name="nome"><br>
-          CreationDate:<input type="date" name="creazioneData"><br>
+          CreationDate:<input type="date" name="creazioneData"><br><br>
           <input type="submit" value="search group">
           <input type="reset" value="reset"><br><br>
         </form>
@@ -93,7 +92,7 @@ if ($jsonData) {
                   G.dataCreazione,
                   count(A.file) AS filesAssoc
                 FROM Gruppo G
-                JOIN FileAssociatoGruppo A
+                LEFT JOIN FileAssociatoGruppo A
                 ON G.codice = A.codGruppo
                 WHERE 1=1";
       $params = [];
@@ -177,6 +176,7 @@ if ($jsonData) {
       <table class="table">
         <tr class = "header">
           <th>Created by</th>
+          <th style="display: none;">Created by code</th>
           <th style="display: none;">Code</th>
           <th>Name</th>
           <th>Date creation</th>
@@ -213,6 +213,7 @@ if ($jsonData) {
                 ?> 
             </a>
           </td>
+          <td id="<?php echo $row["codice"]; ?>_createdByCode" style="display: none;"> <?php echo $row["creatoDa"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_codice" style="display: none;"> <?php echo $row["codice"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_nome"> <?php echo $row["nome"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_dataCreazione"> <?php echo $row["dataCreazione"]; ?></td>
@@ -242,16 +243,16 @@ if ($jsonData) {
   </div>
   <div id="edit_dialog" title="Edit record" style="display: none;">
     <form action="" method="post">
-      Created by: <input type="number" name="createdby"><br>
-      Code: <input type="number " name="code" readonly><br>
+      Created by (user code): <input type="number" name="createdby" style="width: 80px;"><br>
+      <input type="number " name="code" style="display: none;" readonly>
       Name: <input type="text" name="name"><br>
       Creation date: <input type="date" name="creationdate"><br>
     </form>
   </div>
   <div id="add_dialog" title="Add record" style="display: none;">
     <form action="" method="post">
-      Created by: <input type="number" name="createdby"><br>
-      Code: <input type="number " name="code" readonly><br>
+      Created by (user code): <input type="number" name="createdby" style="width: 80px;"><br>
+      <input type="number " name="code" style="display: none;" readonly>
       Name: <input type="text" name="name"><br>
       Creation date: <input type="date" name="creationdate"><br>
     </form>

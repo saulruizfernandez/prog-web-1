@@ -82,8 +82,8 @@ if ($jsonData) {
       </nav>
       <div id="search_filter">
         <form method="POST" action="">
-          Uploaded by:<input type="text" name="caricatoda"><br>
-          File number:<input type="text" name="numero"><br>
+          <input type="text" name="caricatoda" style="display: none;">
+          <input type="text" name="numero" style="display: none;">
           Title:<input type="text" name="title"><br>
           Dimension:<input type="text" name="dimension" step="0.01"><br>
           URL:<input type="text" name="uurl"><br>
