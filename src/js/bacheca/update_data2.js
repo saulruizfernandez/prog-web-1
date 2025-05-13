@@ -1,8 +1,8 @@
 $(function () {
   function validateForm(data) {
     const errors = [];
-    if (!/^[a-zA-Z0-9]*$/.test(data.nome)) {
-      errors.push("Name can only have letters and numbers");
+    if (!/^[a-zA-Z0-9\s,.-/]*$/.test(data.nome)) {
+      errors.push("Name can only have letters, numbers, spaces and periods");
     }
     return errors;
   }
@@ -52,9 +52,11 @@ $(function () {
             "src/php/bacheca/delete_data.php",
             {
               id: record_to_delete,
+              nome: $(this).find('input[name="nome"]').val(),
             },
             function (response) {
               if (response && !response.success) {
+                console.log("error");
                 $("#error_log_message").text(response.error);
               } else {
                 // Force table reload after deletion
@@ -111,7 +113,7 @@ $(function () {
                 $("#error_log_message").text(response.error);
               } else {
                 // Force table reload after update
-                $("#search_add_filter form").submit();
+                $("#search_filter form").submit();
               }
             },
             "json"
