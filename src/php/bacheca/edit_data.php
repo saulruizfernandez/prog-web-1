@@ -16,18 +16,6 @@ if ($nome === '' || $codiceUtente === '') {
   exit;
 }
 
-$check_sql = "SELECT COUNT(*) FROM Bacheca WHERE codiceUtente = :codiceUtente AND nome = :nome";
-$check_stmt = $conn->prepare($check_sql);
-$check_stmt->execute([
-    ':codiceUtente' => $codiceUtente,
-    ':nome' => $nome
-]);
-
-if ($check_stmt->fetchColumn() > 0) {
-    echo json_encode(['success' => false, 'error' => 'Duplicate entry']);
-    exit;
-}
-
 $params = [];
 $params[':codiceUtente'] = intval($_POST['id']);
 $params[':nome'] = $_POST['nome'] = $_POST['nome'];

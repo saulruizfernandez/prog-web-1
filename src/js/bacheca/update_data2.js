@@ -1,8 +1,8 @@
 $(function () {
   function validateForm(data) {
     const errors = [];
-    if (!/^[a-zA-Z0-9]*$/.test(data.nome)) {
-      errors.push("Name can only have letters and numbers");
+    if (!/^[a-zA-Z0-9\s,.-/]*$/.test(data.nome)) {
+      errors.push("Name can only have letters, numbers, spaces and periods");
     }
     return errors;
   }
@@ -33,6 +33,10 @@ $(function () {
 
   $(".delete_button").on("click", function () {
     const record_to_delete = $(this).attr("id").replace(/\D/g, "");
+    const nome = $("#" + record_to_delete + "_nome").text().trim();
+
+    console.log("ID to delete:", record_to_delete);
+    console.log("Nome to delete:", nome);
     $("#delete_dialog").dialog({
       resizable: false,
       show: {
@@ -52,13 +56,15 @@ $(function () {
             "src/php/bacheca/delete_data.php",
             {
               id: record_to_delete,
+              nome: nome,
             },
             function (response) {
               if (response && !response.success) {
+                console.log("error");
                 $("#error_log_message").text(response.error);
               } else {
                 // Force table reload after deletion
-                $("#search_add_filter form").submit();
+                $("#search_filter form").submit();
               }
             }
           );
@@ -111,7 +117,7 @@ $(function () {
                 $("#error_log_message").text(response.error);
               } else {
                 // Force table reload after update
-                $("#search_add_filter form").submit();
+                $("#search_filter form").submit();
               }
             },
             "json"

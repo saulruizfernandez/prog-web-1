@@ -61,7 +61,7 @@ if ($jsonData) {
   <script src="lib/jquery-ui-1.14.1.custom/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="lib/jquery-ui-1.14.1.custom/jquery-ui.min.css">
   <script src="src/js/header_footer.js"></script>
-  <script src="src/js/bacheca/update_data.js"></script>
+  <script src="src/js/bacheca/update_data2.js"></script>
 </head>
 <body>
   <?php include 'src/php/connection.php'; ?> 
@@ -245,7 +245,7 @@ if ($jsonData) {
   </div>
   <div id="add_dialog" title="Add record" style="display: none;">
     <form action="" method="post">
-      <input type="text" name="codiceUtente" style="display: none"><br>
+      User Code<input type="text" name="codiceUtente"><br>
       Notice name: <input type="text" name="nome"><br>
       Creation Date: <input type="date" name="dataCreazione"><br>
     </form>
