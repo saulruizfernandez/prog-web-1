@@ -1,11 +1,11 @@
 <?php
 $servername = "localhost";
-$username = "root";
-$password = "";
+$username = "user";
+$password = "1234";
 $dbname = "my_arsahosting";
 
 try {
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username);
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Error en conexión: " . $e->getMessage());
