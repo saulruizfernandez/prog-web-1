@@ -1,6 +1,6 @@
 <?php
   include __DIR__ . '/../connection.php';
-  $rec_param = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
+  $codice = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
   $query2 = "SELECT G.codice AS cod
             FROM UtenteAutorizzatoGruppo C
             JOIN Gruppo G ON C.codGruppo = G.codice

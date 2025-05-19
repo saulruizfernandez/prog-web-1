@@ -211,11 +211,11 @@ if ($jsonData) {
             </a>
           </td>
           <td id="<?php echo $row["codiceUtente"]; ?>_nome"> <?php echo $row["nome"]; ?></td>
-          <td id="<?php echo $row["codiceUtente"]; ?>_dataCreazione"> <?php echo $row["dataCreazione"]; ?></td>
+          <td id="<?php echo $row["codiceUtente"]; ?>_dataCreazione"> <?php echo date("d/m/Y", strtotime($row["dataCreazione"])); ?></td>
           <td id="<?php echo $row["codiceUtente"]; ?>_numFiles">
-            <a href="multimedia_file.php?search_filter=<?php echo urlencode($row['codiceUtente']); ?>"> 
-              <?php echo $row["numFiles"]; ?>
-            </a>
+          <a href="src/php/file-bacheca/file_bacheca.php?codUtente=<?php echo urlencode($row['codiceUtente']); ?>&nome=<?php echo urlencode($row['nome']); ?>"> 
+            <?php echo $row["numFiles"]; ?>
+          </a>
           </td>
           <td><button class="edit_button" id="<?php echo $row["codiceUtente"]; ?>_edit"><img src="media/icons/edit_icon.png" alt="edit_icon" style="width:30px; height:30px"></button></td>
           <td><button class="delete_button" id="<?php echo $row["codiceUtente"]; ?>_delete"><img src="media/icons/delete_icon.png" alt="delete_icon" style="width:30px; height:30px"></button></td>

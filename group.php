@@ -216,7 +216,7 @@ if ($jsonData) {
           <td id="<?php echo $row["codice"]; ?>_createdByCode" style="display: none;"> <?php echo $row["creatoDa"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_codice" style="display: none;"> <?php echo $row["codice"]; ?></td>
           <td id="<?php echo $row["codice"]; ?>_nome"> <?php echo $row["nome"]; ?></td>
-          <td id="<?php echo $row["codice"]; ?>_dataCreazione"> <?php echo $row["dataCreazione"]; ?></td>
+          <td id="<?php echo $row["codice"]; ?>_dataCreazione"> <?php echo date("d/m/Y", strtotime($row["dataCreazione"])); ?></td>
           <td id="<?php echo $row["codice"]; ?>_filesAssoc">
             <a href="src/php/group-files/group_files.php?search_filter=<?php echo urlencode($row["codice"]); ?>"> 
               <?php echo $row["filesAssoc"]; ?>
