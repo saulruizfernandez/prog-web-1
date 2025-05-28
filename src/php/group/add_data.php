@@ -22,7 +22,7 @@ if ($createdby) {
 
 $query = "SELECT MIN(missing.codice) AS next_code
           FROM (
-                SELECT 0 AS codice
+                SELECT 1 AS codice
                 UNION ALL
                 SELECT codice + 1
                 FROM Gruppo

@@ -128,19 +128,19 @@ if ($jsonData) {
               }
           }
           if (!empty($_POST["nome"])) {
-              if (strpos($_POST["nome"], ',') !== false) {
-                  $values = array_map('trim', explode(',', $_POST["nome"]));
-                  $placeholders = [];
-                  foreach ($values as $index => $value) {
-                      $placeholder = ":nome_$index";
-                      $placeholders[] = $placeholder;
-                      $params[$placeholder] = $value;
-                  }
-                  $query .= " AND nome IN (" . implode(',', $placeholders) . ")";
-              } else {
-                  $query .= " AND nome = :nome";
-                  $params[":nome"] = $_POST["nome"];
-              }
+            if (strpos($_POST["nome"], ',') !== false) {
+                $values = array_map('trim', explode(',', $_POST["nome"]));
+                $placeholders = [];
+                foreach ($values as $index => $value) {
+                    $placeholder = ":nome_$index";
+                    $placeholders[] = $placeholder;
+                    $params[$placeholder] = "%$value%";
+                }
+                $query .= " AND (" . implode(' OR ', array_map(fn($p) => "nome LIKE $p", $placeholders)) . ")";
+            } else {
+                $query .= " AND nome LIKE :nome";
+                $params[":nome"] = "%" . $_POST["nome"] . "%";
+            }
           }
           if (!empty($_POST["creazioneData"])) {
               if (strpos($_POST["creazioneData"], ',') !== false) {

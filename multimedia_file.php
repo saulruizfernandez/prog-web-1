@@ -217,6 +217,7 @@ if ($jsonData) {
       <table class="table">
         <tr class = "header">
           <th>Uploaded by</th>
+          <th style="display: none;">Code Uploaded</th>
           <th style="display: none;">File number</th>
           <th>Title</th>
           <th>Dimension</th>
@@ -254,6 +255,7 @@ if ($jsonData) {
               ?> 
             </a>
           </td>
+          <td id="<?php echo $row["numero"]; ?>_codeuploaded" style="display: none;"> <?php echo $row["caricatoDa"]; ?></td>
           <td id="<?php echo $row["numero"]; ?>_number" style="display: none;"> <?php echo $row["numero"]; ?></td>
           <td id="<?php echo $row["numero"]; ?>_title"> <?php echo $row["titolo"]; ?></td>
           <td id="<?php echo $row["numero"]; ?>_dimension"> <?php echo $row["dimensione"]; ?></td>
@@ -280,8 +282,8 @@ if ($jsonData) {
   </div>
   <div id="edit_dialog" title="Edit record" style="display: none;">
     <form action="" method="post">
-      Uploaded by: <input type="text" name="uploadedby" readonly><br>
-      File number: <input type="number " name="number" readonly><br>
+      <input type="number" name="uploadedby" style="display: none;">
+      <input type="number " name="number" style="display: none;" readonly>
       Title: <input type="text" name="title"><br>
       Dimension: <input type="number" step="0.01" name="dimension"><br>
       URL: <input type="text" name="uurl"><br>
@@ -295,8 +297,8 @@ if ($jsonData) {
   </div>
   <div id="add_dialog" title="Add record" style="display: none;">
     <form action="" method="post">
-      Uploaded by: <input type="number" name="uploadedby"><br>
-      File number: <input type="number " name="number" readonly><br>
+      <input type="number" name="uploadedby" style="display: none;">
+      <input type="number " name="number" style="display: none;" readonly>
       Title: <input type="text" name="title"><br>
       Dimension: <input type="number" step="0.01" name="dimension"><br>
       URL: <input type="text" name="uurl"><br>

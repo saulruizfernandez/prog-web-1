@@ -212,7 +212,7 @@ $(function () {
                 $("#error_log_message").text(response.error);
               } else {
                 // Force table reload after addition
-                $("#search_add_filter form").submit();
+                $("#search_filter form").submit();
               }
             },
             "json"

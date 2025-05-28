@@ -22,7 +22,7 @@ if ($uploadedby) {
 
 $query = "SELECT MIN(missing.numero) AS next_code
           FROM (
-                SELECT 0 AS numero
+                SELECT 1 AS numero
                 UNION ALL
                 SELECT numero + 1
                 FROM FileMultimediale
