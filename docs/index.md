@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# User for whom the application intended for?
+# User for whom the application is intended for?
 
 Arsanet is an application that manages the data of a **social network**. It enables to perform some administrative tasks through a friendly
 and easy-to-use interface.
@@ -14,4 +14,4 @@ The administrator will be the main user of this app. Arsanet provides an interfa
 implementation of the project. So this person will not need special capabilities in ICT. The app speaks by its own, and there is no need of
 a tutorial to learn how to use it.
 
-[Click here to download the pdf version of this text](docs/doc_arsanet.pdf)
+[Click here to download the pdf version of this text](doc_arsanet.pdf)
