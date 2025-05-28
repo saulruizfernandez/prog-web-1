@@ -14,7 +14,4 @@ The administrator will be the main user of this app. Arsanet provides an interfa
 implementation of the project. So this person will not need special capabilities in ICT. The app speaks by its own, and there is no need of
 a tutorial to learn how to use it.
 
-```
 [Click here to download the pdf version of this text](docs/doc_arsanet.pdf)
-
-```
