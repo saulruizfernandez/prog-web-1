@@ -15,6 +15,21 @@ $(function () {
     return errors;
   }
 
+  $.datepicker.setDefaults({
+    dateFormat: "dd/mm/yy",
+  });
+  $(".datepicker").datepicker();
+
+  $("#search_filter form").on("submit", function (e) {
+    const dateField = $(this).find(".datepicker");
+    const originalDate = dateField.val();
+    if (originalDate) {
+      const parts = originalDate.split("/");
+      const formattedDate = parts[2] + "-" + parts[1] + "-" + parts[0];
+      dateField.val(formattedDate);
+    }
+  });
+
   function fill_form_values(record_to_update) {
     $("#edit_dialog form input").each(function () {
       if ($(this).attr("name") === "codice") {
@@ -111,7 +126,18 @@ $(function () {
               nickname: $(this).find('input[name="nickname"]').val(),
               nome: $(this).find('input[name="nome"]').val(),
               cognome: $(this).find('input[name="cognome"]').val(),
-              dataNascita: $(this).find('input[name="dataNascita"]').val(),
+              dataNascita: (() => {
+                const formContext = $(this);
+                const originalDate = formContext
+                  .find('input[name="dataNascita"]')
+                  .val();
+                if (originalDate) {
+                  const parts = originalDate.split("/");
+                  const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                  return formattedDate;
+                }
+                return "";
+              })(),
             },
             function (response) {
               if (response && !response.success) {
@@ -170,7 +196,18 @@ $(function () {
               nickname: $(this).find('input[name="nickname"]').val(),
               nome: $(this).find('input[name="nome"]').val(),
               cognome: $(this).find('input[name="cognome"]').val(),
-              dataNascita: $(this).find('input[name="dataNascita"]').val(),
+              dataNascita: (() => {
+                const formContext = $(this);
+                const originalDate = formContext
+                  .find('input[name="dataNascita"]')
+                  .val();
+                if (originalDate) {
+                  const parts = originalDate.split("/");
+                  const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                  return formattedDate;
+                }
+                return "";
+              })(),
             },
             function (response) {
               if (response && !response.success) {

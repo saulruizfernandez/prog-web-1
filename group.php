@@ -72,7 +72,7 @@ if ($jsonData) {
           <input type="text" name="creatoDa" style="display: none;">
           <input type="text" name="numero" style="display: none;">
           Name:<input type="text" name="nome"><br>
-          CreationDate:<input type="date" name="creazioneData"><br><br>
+          CreationDate:<input type="text" name="creazioneData" class="datepicker"><br><br>
           <input type="submit" value="search group">
           <input type="reset" value="reset"><br><br>
         </form>
@@ -246,7 +246,7 @@ if ($jsonData) {
       Created by (user code): <input type="number" name="createdby" style="width: 80px;"><br>
       <input type="number " name="code" style="display: none;" readonly>
       Name: <input type="text" name="name"><br>
-      Creation date: <input type="date" name="creationdate"><br>
+      Creation date: <input type="text" name="creationdate" class="datepicker"><br>
     </form>
   </div>
   <div id="add_dialog" title="Add record" style="display: none;">
@@ -254,7 +254,7 @@ if ($jsonData) {
       Created by (user code): <input type="number" name="createdby" style="width: 80px;"><br>
       <input type="number " name="code" style="display: none;" readonly>
       Name: <input type="text" name="name"><br>
-      Creation date: <input type="date" name="creationdate"><br>
+      Creation date: <input type="text" name="creationdate" class="datepicker"><br>
     </form>
   </div>
   <div id="footer"></div>

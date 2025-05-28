@@ -7,7 +7,7 @@
             WHERE C.codUtente = :codice;";
   try {
       $stmt2 = $conn->prepare($query2);
-      $stmt2->bindParam(':codice', $rec_param, PDO::PARAM_INT);
+      $stmt2->bindParam(':codice', $codice, PDO::PARAM_INT);
       $stmt2->execute();
       $result2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);
       $serializedData = urlencode(json_encode($result2));

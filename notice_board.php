@@ -81,7 +81,7 @@ if ($jsonData) {
           <input type="text" name="codiceUtente" style="display: none">
           User Name:<input type="text" name="userName"><br>
           Notice Name:<input type="text" name="nome"><br>
-          Creation Date: <input type="date" name="dataCreazione"><br><br>
+          Creation Date: <input type="text" name="dataCreazione" class="datepicker"><br><br>
           <input type="submit" value="search notice board">
           <input type="reset" value="reset"><br><br>
         </form>
@@ -240,14 +240,14 @@ if ($jsonData) {
     <form action="" method="post">
       <input type="text" name="codiceUtente" style="display: none"><br>
       Notice name: <input type="text" name="nome"><br>
-      Creation Date: <input type="date" name="dataCreazione"><br>
+      Creation Date: <input type="text" name="dataCreazione" class="datepicker"><br>
     </form>
   </div>
   <div id="add_dialog" title="Add record" style="display: none;">
     <form action="" method="post">
       User Code<input type="text" name="codiceUtente"><br>
       Notice name: <input type="text" name="nome"><br>
-      Creation Date: <input type="date" name="dataCreazione"><br>
+      Creation Date: <input type="text" name="dataCreazione" class="datepicker"><br>
     </form>
   </div>
   <div id="footer"></div>

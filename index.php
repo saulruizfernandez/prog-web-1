@@ -46,7 +46,7 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
           Nickname:<input type="text" name="nickname"><br>
           Name:<input type="text" name="nome"><br>
           Surname:<input type="text" name="cognome"><br>
-          Birthday: <input type="date" name="dataNascita"><br><br>
+          Birthday: <input type="text" name="dataNascita" class="datepicker"><br><br>
           <input type="submit" value="search user">
           <input type="reset" value="reset"><br><br>
         </form>
@@ -267,7 +267,7 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
       Nickname: <input type="text" name="nickname"><br>
       First name: <input type="text" name="nome"><br>
       Last name: <input type="text" name="cognome"><br>
-      Birthday: <input type="date" name="dataNascita"><br>
+      Birthday: <input type="text" name="dataNascita" class="datepicker"><br>
     </form>
   </div>
   <div id="add_dialog" title="Add record" style="display: none;">
@@ -275,7 +275,7 @@ $searchFilter = isset($_GET['search_filter']) ? $_GET['search_filter'] : '';
       Nickname: <input type="text" name="nickname"><br>
       First name: <input type="text" name="nome"><br>
       Last name: <input type="text" name="cognome"><br>
-      Birthday: <input type="date" name="dataNascita"><br>
+      Birthday: <input type="text" name="dataNascita" class="datepicker"><br>
     </form>
   </div>
   <div id="footer"></div>

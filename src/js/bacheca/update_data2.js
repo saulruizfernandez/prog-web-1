@@ -7,6 +7,21 @@ $(function () {
     return errors;
   }
 
+  $.datepicker.setDefaults({
+    dateFormat: "dd/mm/yy",
+  });
+  $(".datepicker").datepicker();
+
+  $("#search_filter form").on("submit", function (e) {
+    const dateField = $(this).find(".datepicker");
+    const originalDate = dateField.val();
+    if (originalDate) {
+      const parts = originalDate.split("/");
+      const formattedDate = parts[2] + "-" + parts[1] + "-" + parts[0];
+      dateField.val(formattedDate);
+    }
+  });
+
   function fill_form_values(record_to_update) {
     $("#edit_dialog form input").each(function () {
       if ($(this).attr("name") === "codiceUtente") {
@@ -33,7 +48,9 @@ $(function () {
 
   $(".delete_button").on("click", function () {
     const record_to_delete = $(this).attr("id").replace(/\D/g, "");
-    const nome = $("#" + record_to_delete + "_nome").text().trim();
+    const nome = $("#" + record_to_delete + "_nome")
+      .text()
+      .trim();
 
     console.log("ID to delete:", record_to_delete);
     console.log("Nome to delete:", nome);
@@ -110,7 +127,18 @@ $(function () {
               id: record_to_update,
               codiceUtente: $(this).find('input[name="codiceUtente"]').val(),
               nome: $(this).find('input[name="nome"]').val(),
-              dataCreazione: $(this).find('input[name="dataCreazione"]').val(),
+              dataCreazione: (() => {
+                const formContext = $(this);
+                const originalDate = formContext
+                  .find('input[name="dataCreazione"]')
+                  .val();
+                if (originalDate) {
+                  const parts = originalDate.split("/");
+                  const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                  return formattedDate;
+                }
+                return "";
+              })(),
             },
             function (response) {
               if (response && !response.success) {
@@ -166,7 +194,18 @@ $(function () {
               id: record_to_add,
               codiceUtente: $(this).find('input[name="codiceUtente"]').val(),
               nome: $(this).find('input[name="nome"]').val(),
-              dataCreazione: $(this).find('input[name="dataCreazione"]').val(),
+              dataCreazione: (() => {
+                const formContext = $(this);
+                const originalDate = formContext
+                  .find('input[name="dataCreazione"]')
+                  .val();
+                if (originalDate) {
+                  const parts = originalDate.split("/");
+                  const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                  return formattedDate;
+                }
+                return "";
+              })(),
             },
             function (response) {
               if (response && !response.success) {
